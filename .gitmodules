@@ -1,0 +1,9 @@
+[submodule "TakkaEngineCore/externals/glfw"]
+	path = TakkaEngineCore/externals/glfw
+	url = https://github.com/glfw/glfw
+[submodule "TakkaEngineCore/externals/assimp"]
+	path = TakkaEngineCore/externals/assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "TakkaEngineCore/externals/glm"]
+	path = TakkaEngineCore/externals/glm
+	url = https://github.com/g-truc/glm.git
