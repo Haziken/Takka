@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2)
 set(PR_NAME TAKKACORE)
 
 project(${PR_NAME})
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(INCLUDE include/Application.h)
 set(SOURCE src/Application.cpp)
@@ -25,7 +27,3 @@ target_include_directories(${PR_NAME} PRIVATE externals/glfw/include)
 add_subdirectory(externals/glm)
 target_link_libraries(${PR_NAME} PRIVATE glm::glm)
 target_include_directories(${PR_NAME} PRIVATE externals/glm/glm)
-
-add_subdirectory(externals/soil)
-target_link_libraries(${PR_NAME} PRIVATE soil)
-target_include_directories(${PR_NAME} PRIVATE externals/soil/include)

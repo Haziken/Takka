@@ -7,3 +7,6 @@
 [submodule "TakkaEngineCore/externals/glm"]
 	path = TakkaEngineCore/externals/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "TakkaEngineCore/externals/stb"]
+	path = TakkaEngineCore/externals/stb
+	url = https://github.com/nothings/stb
