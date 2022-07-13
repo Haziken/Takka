@@ -1,5 +1,6 @@
 #pragma once
-#include "Utils.h"
+#include <Utils.h>
+#include <Window.h>
 
 namespace Takka
 {
@@ -7,7 +8,19 @@ namespace Takka
     {
     public:
         DELCPY(Application);
-        Application();
-        //Application(std::string title, );
+        Application() = delete;
+        Application(std::string title, GLuint w, GLuint h);
+        Application(Window* win);
+
+        Window* GetWindow();
+
+        virtual void Setup() {};
+        virtual void Update() {};
+        virtual void Render() {};
+
+        void Run();
+
+    private:
+        Window* win = nullptr;
     };
 }

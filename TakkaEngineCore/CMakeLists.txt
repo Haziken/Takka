@@ -14,7 +14,8 @@ set(INCLUDE
 	include/Video/Buffer.h
 	include/Video/VBO.h
 	include/Video/EBO.h
-	include/Video/VAO.h)
+	include/Video/VAO.h
+	include/Shader.h)
 
 set(SOURCE 
 	src/Application.cpp
@@ -23,26 +24,29 @@ set(SOURCE
 	src/Video/Buffer.cpp
 	src/Video/VBO.cpp
 	src/Video/EBO.cpp
-	src/Video/VAO.cpp)
+	src/Video/VAO.cpp
+	src/Shader.cpp)
 
 add_library(${PR_NAME} STATIC ${INCLUDE} ${SOURCE})
-target_include_directories(${PR_NAME} PUBLIC include)
+target_include_directories(${PR_NAME} PUBLIC INCLUDE)
 
 add_subdirectory(externals/assimp)
 target_link_libraries(${PR_NAME} PRIVATE assimp)
-target_include_directories(${PR_NAME} PRIVATE externals/assimp/include)
+target_include_directories(${PR_NAME} PUBLIC externals/assimp/include)
 
 add_subdirectory(externals/glad)
 target_link_libraries(${PR_NAME} PRIVATE glad)
-target_include_directories(${PR_NAME} PRIVATE externals/glad/include)
+target_include_directories(${PR_NAME} PUBLIC externals/glad/include)
 
 add_subdirectory(externals/glfw)
 target_link_libraries(${PR_NAME} PRIVATE glfw)
-target_include_directories(${PR_NAME} PRIVATE externals/glfw/include)
+target_include_directories(${PR_NAME} PUBLIC externals/glfw/include)
 
 add_subdirectory(externals/glm)
 target_link_libraries(${PR_NAME} PRIVATE glm::glm)
-target_include_directories(${PR_NAME} PRIVATE externals/glm/glm)
+target_include_directories(${PR_NAME} PUBLIC externals/glm/glm)
 
 
-target_include_directories(${PR_NAME} PRIVATE externals/stb)
+target_include_directories(${PR_NAME} PUBLIC externals/stb)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})

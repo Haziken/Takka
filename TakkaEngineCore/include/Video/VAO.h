@@ -2,6 +2,7 @@
 
 #include <Video/VBO.h>
 #include <Video/EBO.h>
+#include <Shader.h>
 
 namespace Takka
 {
@@ -27,11 +28,11 @@ namespace Takka
 		void EnableArray(GLuint arrayID);
 		void DisableArray(GLuint arrayID);
 
-		void AddAttribPointer(GLuint id, GLuint size, GLenum dataType, GLuint dataSize, GLuint dataIndent = 0, GLboolean normalaze = GL_FALSE);
+		void AddAttribPointer(GLuint id, GLuint size, GLuint dataSize, GLenum dataType = GL_FLOAT, GLuint dataIndent = 0, GLboolean normalaze = GL_FALSE);
 
-		void Draw(); // Shader
+		void Draw(Shader& shader, GLuint indent = 0); // Shader
 
 	private:
-		GLuint id, indices;
+		GLuint id = 0, indices = 0;
 	};
 }

@@ -1,4 +1,4 @@
-#include "Window.h"
+#include <Window.h>
 
 Takka::Window::Window(std::string title, GLint w, GLint h) : w(w), h(h)
 {
@@ -10,10 +10,15 @@ Takka::Window::Window(std::string title, GLint w, GLint h) : w(w), h(h)
 
 	window = glfwCreateWindow(w, h, title.c_str(), NULL, NULL);
 	glfwMakeContextCurrent(window);
+
 }
 
 Takka::Window::~Window()
 {
 	glfwDestroyWindow(window);
 	glfwTerminate();
+}
+
+void Takka::Window::getSize(GLuint& w, GLuint& h)
+{
 }

@@ -69,7 +69,7 @@ void Takka::VAO::DisableArray(GLuint arrayID)
 	glDisableVertexAttribArray(arrayID);
 }
 
-void Takka::VAO::AddAttribPointer(GLuint id, GLuint size, GLenum dataType, GLuint dataSize, GLuint dataIndent, GLboolean normalaze)
+void Takka::VAO::AddAttribPointer(GLuint id, GLuint size, GLuint dataSize, GLenum dataType, GLuint dataIndent, GLboolean normalaze)
 {
 	Bind();
 	glVertexAttribPointer(id, size, dataType, normalaze, dataSize, (void*)dataIndent);
@@ -77,7 +77,10 @@ void Takka::VAO::AddAttribPointer(GLuint id, GLuint size, GLenum dataType, GLuin
 	UnBind();
 }
 
-void Takka::VAO::Draw()
+void Takka::VAO::Draw(Shader& shader, GLuint indent)
 {
-	// TODO: SHADER
+	shader.Use();
+	Bind();
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, (void*)indent);
+	UnBind();
 }
