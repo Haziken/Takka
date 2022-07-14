@@ -22,7 +22,7 @@ namespace Takka
 		void LoadData(Array<T>& data, GLenum renderType)
 		{
 			Bind();
-			glBufferData(id, data.getSizeOfData(), data.getData(), renderType);
+			glBufferData(type, data.getSizeOfData(), data.getData(), renderType);
 			UnBind();
 		}
 

@@ -7,7 +7,7 @@ Takka::Shader::Shader(GLuint id) : id(id)
 
 Takka::Shader::Shader(const std::string& vertex, const std::string& fragment)
 {
-	id = CreateProgram(vertex, fragment);
+	CreateProgram(vertex, fragment);
 }
 
 Takka::Shader::~Shader()
@@ -130,22 +130,36 @@ void Takka::Shader::LoadUniformData(GLuint uniformID, GLfloat data)
 	glUniform1f(uniformID, data);
 }
 
-GLuint Takka::Shader::CreateProgram(const std::string& vertex, const std::string& fragment)
+void Takka::Shader::CreateProgram(const std::string& vertex, const std::string& fragment)
 {
-	GLuint i = glCreateProgram();
+	glDeleteProgram(id);
+	id = glCreateProgram();
 	
+	std::cout << vertex << std::endl;
+	std::cout << fragment << std::endl;
+
 	GLuint vert = CreateShaderProgram(vertex, GL_VERTEX_SHADER);
-	GLuint frag = CreateShaderProgram(fragment, GL_VERTEX_SHADER);
+	GLuint frag = CreateShaderProgram(fragment, GL_FRAGMENT_SHADER);
 
-	glAttachShader(i, vert);
-	glAttachShader(i, frag);
+	glAttachShader(id, vert);
+	glAttachShader(id, frag);
 
-	glLinkProgram(i);
+	glLinkProgram(id);
+
+	GLint success;
+	glGetProgramiv(id, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		GLchar infoLog[1024];
+		glGetShaderInfoLog(id, 1024, nullptr, infoLog);
+		//LERROR("Shader not link: ", infoLog);
+		std::cout << infoLog;
+		glDeleteShader(vert);
+		glDeleteShader(frag);
+	}
 
 	glDeleteShader(vert);
 	glDeleteShader(frag);
-
-	return i;
 }
 
 GLuint Takka::Shader::CreateShaderProgram(const std::string& code, GLenum shaderType)
@@ -154,5 +168,15 @@ GLuint Takka::Shader::CreateShaderProgram(const std::string& code, GLenum shader
 	const char* c = code.c_str();
 	glShaderSource(shaderID, 1, &c, nullptr);
 	glCompileShader(shaderID);
+	GLint success;
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		GLchar infoLog[1024];
+		glGetShaderInfoLog(shaderID, 1024, nullptr, infoLog);
+		//LERROR("Shader not compile: ", infoLog);
+		std::cout << infoLog;
+		return 0;
+	}
 	return shaderID;
 }

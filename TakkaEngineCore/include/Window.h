@@ -12,7 +12,9 @@ namespace Takka
 		Window(std::string title, GLint w, GLint h);
 		~Window();
 
-		void getSize(GLuint& w, GLuint& h);
+		void GetSize(GLuint& w, GLuint& h);
+		GLFWwindow* GetWindow();
+
 	private:
 		GLint w, h;
 		GLFWwindow* window;

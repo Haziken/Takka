@@ -51,7 +51,7 @@ namespace Takka
 		void LoadUniformData(const std::string& uniformName, GLfloat data);
 		static void LoadUniformData(GLuint uniformID, GLfloat data);
 
-		static GLuint CreateProgram(const std::string& vertex, const std::string& fragment);
+		void CreateProgram(const std::string& vertex, const std::string& fragment);
 
 	private:
 		static GLuint CreateShaderProgram(const std::string& code, GLenum shaderType);

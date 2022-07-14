@@ -16,9 +16,14 @@ Takka::Window* Takka::Application::GetWindow()
 void Takka::Application::Run()
 {
 	Setup();
-	while(true)
+	while(!glfwWindowShouldClose(win->GetWindow()))
 	{
+		glClearColor(0.5, 0.5, 0.5, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glfwPollEvents();
 		Update();
 		Render();
+		
+		glfwSwapBuffers(win->GetWindow());
 	}
 }
