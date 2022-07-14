@@ -9,15 +9,18 @@ namespace Takka
 	class VAO
 	{
 	public:
-		DELCPY(VAO);
-
 		VAO();
 		VAO(VBO& vbo);
 		VAO(EBO& ebo);
 		VAO(VBO& vbo, EBO& ebo);
 
+		~VAO();
+
 		void AddEBO(EBO& ebo);
 		void AddVBO(VBO& vbo);
+
+		void LoadElementData(Array<GLuint>& data, GLenum renderType = GL_STATIC_DRAW);
+		void LoadVertexData(Array<GLfloat>& data, GLenum renderType = GL_STATIC_DRAW);
 
 		GLuint GetID();
 		GLuint GetIndices();
@@ -34,5 +37,8 @@ namespace Takka
 
 	private:
 		GLuint id = 0, indices = 0;
+
+		VBO vbo;
+		EBO ebo;
 	};
 }

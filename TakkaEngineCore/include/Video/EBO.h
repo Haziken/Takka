@@ -7,7 +7,6 @@ namespace Takka
 	class EBO : public Buffer
 	{
 	public:
-		DELCPY(EBO);
 		EBO();
 		EBO(Array<GLuint>& data, GLenum renderType = GL_STATIC_DRAW);
 

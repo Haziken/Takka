@@ -24,12 +24,21 @@ Takka::VAO::VAO(VBO& vbo, EBO& ebo)
 	AddVBO(vbo);
 }
 
+Takka::VAO::~VAO()
+{
+	vbo.Delete();
+	ebo.Delete();
+	glDeleteVertexArrays(1, &id);
+}
+
 void Takka::VAO::AddEBO(EBO& ebo)
 {
 	Bind();
 	ebo.Bind();
 	indices = ebo.GetIndices();
 	UnBind();
+	this->ebo.Delete();
+	this->ebo = ebo;
 }
 
 void Takka::VAO::AddVBO(VBO& vbo)
@@ -37,6 +46,20 @@ void Takka::VAO::AddVBO(VBO& vbo)
 	Bind();
 	vbo.Bind();
 	UnBind();
+	this->vbo.Delete();
+	this->vbo = vbo;
+}
+
+void Takka::VAO::LoadElementData(Array<GLuint>& data, GLenum renderType)
+{
+	EBO tempEbo = EBO(data, renderType);
+	AddEBO(tempEbo);
+}
+
+void Takka::VAO::LoadVertexData(Array<GLfloat>& data, GLenum renderType)
+{
+	VBO tempVbo = VBO(data, renderType);
+	AddVBO(tempVbo);
 }
 
 GLuint Takka::VAO::GetID()
@@ -81,7 +104,6 @@ void Takka::VAO::Draw(Shader& shader, GLuint indent)
 {
 	shader.Use();
 	Bind();
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
 	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, (void*)indent);
 	UnBind();
 }

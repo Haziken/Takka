@@ -9,14 +9,21 @@ namespace Takka
 	class Buffer
 	{
 	public:
-		DELCPY(Buffer);
-
 		Buffer(GLenum bufferType);
+		Buffer(GLuint id, GLenum type);
 		~Buffer();
+
+		Buffer(const Buffer& buffer);
+		Buffer(Buffer& buffer);
+
+		Buffer& operator=(const Buffer& buffer);
+		Buffer& operator=(Buffer& buffer);
 
 		void Bind();
 		void UnBind();
 		GLuint GetID();
+
+		void Delete();
 
 		template<typename T>
 		void LoadData(Array<T>& data, GLenum renderType)
