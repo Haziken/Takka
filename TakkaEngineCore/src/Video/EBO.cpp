@@ -8,6 +8,18 @@ Takka::EBO::EBO(Array<GLuint>& data, GLenum renderType) : Buffer(GL_ELEMENT_ARRA
 	indices = data.getSizeOfVector();
 }
 
+Takka::EBO::EBO(EBO& buffer) : Buffer(buffer)
+{
+	indices = buffer.indices;
+}
+
+Takka::EBO& Takka::EBO::operator=(EBO& buffer)
+{
+	BufferCopyData(buffer, *this);
+	indices = buffer.indices;
+	return *this;
+}
+
 GLuint Takka::EBO::GetIndices()
 {
 	return indices;

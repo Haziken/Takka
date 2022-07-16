@@ -17,12 +17,13 @@ public:
             Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex.glsl"), 
             Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment.glsl"));
 
-        vao.LoadElementData(Takka::Array<GLuint>({ 0,1,2,2,1,3 }), GL_STATIC_DRAW);
-        vao.LoadVertexData(Takka::Array<GLfloat>({
+        vao.AddVBO(Takka::VBO(Takka::Array<GLfloat>({
             -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
             -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
              0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f }), GL_STATIC_DRAW);
+             0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f })));
+
+        vao.AddEBO(Takka::EBO(Takka::Array<GLuint>({ 0,1,2,2,1,3 })));
 
         vao.AddAttribPointer(0, 3, 6 * sizeof(GLfloat));
         vao.AddAttribPointer(1, 3, 6 * sizeof(GLfloat), 3 * sizeof(GLfloat));
@@ -46,7 +47,6 @@ private:
 int main()
 {
     std::cout << "Hello Takka" << std::endl;    
-
     App p;
     p.Run();
 }

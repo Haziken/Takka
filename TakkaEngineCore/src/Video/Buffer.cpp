@@ -1,36 +1,26 @@
 #include <Video/Buffer.h>
 
-Takka::Buffer::Buffer(GLenum type) : type(type) 
+Takka::Buffer::Buffer(GLenum type) : type(type)
 {
 	glGenBuffers(1, &id);
 }
 
-Takka::Buffer::Buffer(GLuint id, GLenum type) : id(id), type(type)
-{}
-
-Takka::Buffer::~Buffer()
+Takka::Buffer::Buffer(Buffer& buffer)
 {
-	//glDeleteBuffers(1, &id);
-}
-
-Takka::Buffer::Buffer(const Buffer& buffer) : id(buffer.id), type(buffer.type)
-{}
-
-Takka::Buffer::Buffer(Buffer& buffer) : id(buffer.id), type(buffer.type)
-{}
-
-Takka::Buffer& Takka::Buffer::operator=(const Buffer & buffer)
-{
-	this->id = buffer.id;
-	this->type = buffer.type;
-	return *this;
+	glGenBuffers(1, &id);
+	BufferCopyData(buffer, *this);
 }
 
 Takka::Buffer& Takka::Buffer::operator=(Buffer& buffer)
 {
-	this->id = buffer.id;
-	this->type = buffer.type;
+	BufferCopyData(buffer, *this);
 	return *this;
+}
+
+Takka::Buffer::~Buffer()
+{
+	std::cout << "Delete buffer: " << id << std::endl;
+	glDeleteBuffers(1, &id);
 }
 
 void Takka::Buffer::Bind()
@@ -48,7 +38,14 @@ GLuint Takka::Buffer::GetID()
 	return id;
 }
 
-void Takka::Buffer::Delete()
+void Takka::Buffer::BufferCopyData(Buffer& readBuffer, Buffer& writeBuffer)
 {
-	glDeleteBuffers(1, &id);
+	glBindBuffer(GL_COPY_READ_BUFFER, readBuffer.id);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, writeBuffer.id);
+	glBufferData(GL_COPY_WRITE_BUFFER, readBuffer.sizeOfData, nullptr, GL_STATIC_DRAW);
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, readBuffer.sizeOfData);
+	writeBuffer.sizeOfData = readBuffer.sizeOfData;
+	writeBuffer.type = readBuffer.type;
+	glBindBuffer(GL_COPY_READ_BUFFER, 0);
+	glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
 }

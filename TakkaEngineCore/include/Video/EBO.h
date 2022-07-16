@@ -9,6 +9,8 @@ namespace Takka
 	public:
 		EBO();
 		EBO(Array<GLuint>& data, GLenum renderType = GL_STATIC_DRAW);
+		EBO(EBO& buffer);
+		EBO& operator=(EBO& buffer);
 
 		GLuint GetIndices();
 		void SetIndices(GLuint indices);

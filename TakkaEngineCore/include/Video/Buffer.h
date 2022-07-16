@@ -10,31 +10,47 @@ namespace Takka
 	{
 	public:
 		Buffer(GLenum bufferType);
-		Buffer(GLuint id, GLenum type);
-		~Buffer();
-
-		Buffer(const Buffer& buffer);
 		Buffer(Buffer& buffer);
-
-		Buffer& operator=(const Buffer& buffer);
 		Buffer& operator=(Buffer& buffer);
+		~Buffer();
 
 		void Bind();
 		void UnBind();
 		GLuint GetID();
-
-		void Delete();
 
 		template<typename T>
 		void LoadData(Array<T>& data, GLenum renderType)
 		{
 			Bind();
 			glBufferData(type, data.getSizeOfData(), data.getData(), renderType);
+			sizeOfData = data.getSizeOfData();
 			UnBind();
 		}
+
+		template<typename T>
+		void LoadSubData(Array<T>& data)
+		{
+			Bind();
+			glBufferSubData(type, sizeOfData, data.getSizeOfData(), data.getData());
+			sizeOfData += data.getSizeOfData();
+			UnBind();
+		}
+
+		/*template<typename T>
+		Array<T> GetBufferData()
+		{
+			T* data = malloc(sizeOfData);
+			Bind();
+			glGetBufferSubData(type, 0, sizeOfData, data);
+			UnBind();
+			return Array<T>(data, sizeOfData / sizeof(T));
+		}*/
+
+		static void BufferCopyData(Buffer& readBuffer, Buffer& writeBuffer);
 
 	private:
 		GLuint id;
 		GLenum type;
+		GLuint sizeOfData = 0;
 	};
 }

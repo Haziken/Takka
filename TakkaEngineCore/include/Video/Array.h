@@ -15,10 +15,18 @@ namespace Takka
 
 		~Array();
 
-		std::vector<T>& getVector() const;
+		std::vector<T>& getVector();
 		T* getData();
 		size_t getSizeOfVector();
 		size_t getSizeOfData();
+
+		friend std::ostream& operator<<(std::ostream& stream, Array<T>& arr)
+		{
+			for (size_t i = 0; i < arr.getSizeOfVector(); ++i)
+				stream << arr.getData()[i] << " ";
+			return stream;
+		}
+
 	private:
 		std::vector<T> data;
 	};
@@ -37,7 +45,7 @@ namespace Takka
 	inline Array<T>::~Array() {}
 
 	template<typename T>
-	inline std::vector<T>& Array<T>::getVector() const
+	inline std::vector<T>& Array<T>::getVector()
 	{
 		return data;
 	}

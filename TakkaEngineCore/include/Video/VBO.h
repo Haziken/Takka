@@ -11,5 +11,7 @@ namespace Takka
 	public:
 		VBO();
 		VBO(Array<GLfloat>& vertexes, GLenum renderType = GL_STATIC_DRAW);
+		VBO(VBO& buffer);
+		VBO& operator=(VBO& buffer);
 	};
 }
