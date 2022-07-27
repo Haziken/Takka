@@ -134,9 +134,6 @@ void Takka::Shader::CreateProgram(const std::string& vertex, const std::string& 
 {
 	glDeleteProgram(id);
 	id = glCreateProgram();
-	
-	std::cout << vertex << std::endl;
-	std::cout << fragment << std::endl;
 
 	GLuint vert = CreateShaderProgram(vertex, GL_VERTEX_SHADER);
 	GLuint frag = CreateShaderProgram(fragment, GL_FRAGMENT_SHADER);

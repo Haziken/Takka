@@ -1,10 +1,12 @@
 #version 460 core
 
-in vec3 mycol;
+uniform sampler2D text;
+
+in vec2 coord;
 
 out vec4 color;
 
 void main()
 {
-    color = vec4(mycol, 1.0f);
+    color =texture(text, coord);
 }

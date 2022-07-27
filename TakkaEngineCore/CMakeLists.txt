@@ -16,7 +16,9 @@ set(INCLUDE
 	include/Video/EBO.h
 	include/Video/VAO.h
 	include/Shader.h
-	include/Camera.h)
+	include/Camera.h
+	include/Texture.h
+	include/Logger.h)
 
 set(SOURCE 
 	src/Application.cpp
@@ -27,7 +29,9 @@ set(SOURCE
 	src/Video/EBO.cpp
 	src/Video/VAO.cpp
 	src/Shader.cpp
-	src/Camera.cpp)
+	src/Camera.cpp
+	src/Texture.cpp
+	src/Logger.cpp)
 
 add_library(${PR_NAME} STATIC ${INCLUDE} ${SOURCE})
 target_include_directories(${PR_NAME} PUBLIC INCLUDE)
