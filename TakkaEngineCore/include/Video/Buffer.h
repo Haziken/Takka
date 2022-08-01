@@ -36,16 +36,6 @@ namespace Takka
 			UnBind();
 		}
 
-		/*template<typename T>
-		Array<T> GetBufferData()
-		{
-			T* data = malloc(sizeOfData);
-			Bind();
-			glGetBufferSubData(type, 0, sizeOfData, data);
-			UnBind();
-			return Array<T>(data, sizeOfData / sizeof(T));
-		}*/
-
 		static void BufferCopyData(Buffer& readBuffer, Buffer& writeBuffer);
 
 	private:

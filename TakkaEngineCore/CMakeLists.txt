@@ -6,32 +6,8 @@ project(${PR_NAME})
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(INCLUDE 
-	include/Application.h
-	include/Utils.h
-	include/Window.h
-	include/Video/Array.h
-	include/Video/Buffer.h
-	include/Video/VBO.h
-	include/Video/EBO.h
-	include/Video/VAO.h
-	include/Shader.h
-	include/Camera.h
-	include/Texture.h
-	include/Logger.h)
-
-set(SOURCE 
-	src/Application.cpp
-	src/Window.cpp
-	src/Video/Array.cpp
-	src/Video/Buffer.cpp
-	src/Video/VBO.cpp
-	src/Video/EBO.cpp
-	src/Video/VAO.cpp
-	src/Shader.cpp
-	src/Camera.cpp
-	src/Texture.cpp
-	src/Logger.cpp)
+file(GLOB_RECURSE SOURCE src/*.cpp)
+file(GLOB_RECURSE INCLUDE include/*.h)
 
 add_library(${PR_NAME} STATIC ${INCLUDE} ${SOURCE})
 target_include_directories(${PR_NAME} PUBLIC INCLUDE)
