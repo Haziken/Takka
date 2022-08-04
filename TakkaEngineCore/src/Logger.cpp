@@ -1,5 +1,11 @@
 #include <Logger.h>
+#ifdef WIN32
 #include <Windows.h>
+#endif
+
+#include <ctime>
+#include <sstream>
+#include <iomanip>
 
 Takka::Logger* Takka::Logger::Instance()
 {

@@ -53,10 +53,19 @@ private:
     Takka::VAO vao;
 };
 
+int t = 10;
+
+void f(int*& i)
+{
+    i = &t;
+}
 
 int main()
 {
-    std::cout << "Hello Takka" << std::endl;    
+    std::cout << "Hello Takka" << std::endl;
+    int* i;
+    f(i);
+    std::cout << *i;
     App p;
     p.Run();
 }
