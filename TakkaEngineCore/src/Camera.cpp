@@ -8,6 +8,7 @@ Takka::Camera::Camera(GLuint widht, GLuint height, glm::vec3 position, glm::vec3
 
 void Takka::Camera::LoadMatrixInShader(Shader& sheder, std::string viewMatrixName, std::string projectionMatrix)
 {
+	//sheder.Use();
 	sheder.LoadUniformData(viewMatrixName, GetViewMatrix());
 	sheder.LoadUniformData(projectionMatrix, GetProjectMatrix());
 }
@@ -60,6 +61,16 @@ GLfloat Takka::Camera::GetFov()
 void Takka::Camera::SetFov(GLfloat fov)
 {
 	this->fov = fov;
+}
+
+glm::vec3 Takka::Camera::GetFront()
+{
+	return front;
+}
+
+glm::vec3 Takka::Camera::GetRight()
+{
+	return right;
 }
 
 void Takka::Camera::UpdateVectors()

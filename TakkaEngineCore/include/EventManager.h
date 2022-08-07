@@ -3,9 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 
-#define EVENTMANAGER EventManager::instance()
+#define EVENTMANAGER Takka::EventManager::instance()
 
-#define REGEVENT EVENTMANAGER.Registrate(this);
+#define REGEVENT EVENTMANAGER->Registrate(this);
 
 namespace Takka
 {
@@ -54,6 +54,10 @@ namespace Takka
 		static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
 		static void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);
 
-		static std::vector<Event*> eventList;
+		std::vector<Event*>& GetEventList();
+
+		std::vector<Event*> eventList;
+
+		GLFWwindow* window;
 	};
 }

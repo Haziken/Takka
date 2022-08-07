@@ -1,13 +1,16 @@
 #include "EventManager.h"
 
+Takka::EventManager::EventManager() {}
+
 Takka::EventManager* Takka::EventManager::instance()
 {
-    static EventManager* manage = new EventManager();
-    return manage;
+    static EventManager* manager = new EventManager();
+    return manager;
 }
 
 void Takka::EventManager::Init(GLFWwindow* window)
 {
+    this->window = window;
     glfwSetKeyCallback(window, EventManager::KeyboardEvent);
     glfwSetCharCallback(window, EventManager::TextEvent);
     glfwSetCursorPosCallback(window, EventManager::CursorMoveEvent);
@@ -35,12 +38,12 @@ void Takka::EventManager::Delete(Event* e)
 
 int Takka::EventManager::GetScancode(int key)
 {
-    return 0;
+    return glfwGetKeyScancode(key);
 }
 
 int Takka::EventManager::GetState(int key)
 {
-    return 0;
+    return glfwGetKey(window, key);
 }
 
 void Takka::EventManager::SetInputMode(int mode, int flag)
@@ -123,7 +126,7 @@ void Takka::EventManager::SetClipboardString(std::string text)
 
 void Takka::EventManager::KeyboardEvent(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
     {
         if (action == GLFW_PRESS) i->KeyPress(key, mods);
         if (action == GLFW_RELEASE) i->KeyRelease(key, mods);
@@ -133,25 +136,25 @@ void Takka::EventManager::KeyboardEvent(GLFWwindow* window, int key, int scancod
 
 void Takka::EventManager::TextEvent(GLFWwindow* window, unsigned int codepoint)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
         i->TextInput(codepoint);
 }
 
 void Takka::EventManager::CursorMoveEvent(GLFWwindow* window, double xpos, double ypos)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
         i->CursorPosition(xpos, ypos);
 }
 
 void Takka::EventManager::CursorEnterEvent(GLFWwindow* window, int entered)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
         i->CursorEnder(entered);
 }
 
 void Takka::EventManager::MouseButtonEvent(GLFWwindow* window, int button, int action, int mods)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
     {
         if (action == GLFW_PRESS) i->MouseButtonPress(button, mods);
         if (action == GLFW_RELEASE) i->MouseButtonRelease(button, mods);
@@ -160,6 +163,11 @@ void Takka::EventManager::MouseButtonEvent(GLFWwindow* window, int button, int a
 
 void Takka::EventManager::ScrollEvent(GLFWwindow* window, double xoffset, double yoffset)
 {
-    for (auto i : eventList)
+    for (auto i : EVENTMANAGER->GetEventList())
         i->Scroll(xoffset, yoffset);
+}
+
+std::vector<Takka::Event*>& Takka::EventManager::GetEventList()
+{
+    return eventList;
 }

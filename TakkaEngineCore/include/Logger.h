@@ -7,12 +7,12 @@
 
 #define LOGGER Takka::Logger::Instance()
 
-#define LFATAL(...) LOGGER->Log(Lycoris::LOGLEVEL::FATAL, __VA_ARGS__)
-#define LERROR(...) LOGGER->Log(Lycoris::LOGLEVEL::ERROR, __VA_ARGS__)
-#define LWARN(...) LOGGER->Log(Lycoris::LOGLEVEL::WARN, __VA_ARGS__)
-#define LINFO(...) LOGGER->Log(Lycoris::LOGLEVEL::INFO, __VA_ARGS__)
-#define LDEBUG(...) LOGGER->Log(Lycoris::LOGLEVEL::DEBUG, __VA_ARGS__)
-#define LTRACE(...) LOGGER->Log(Lycoris::LOGLEVEL::TRACE, __VA_ARGS__)
+#define LFATAL(...) LOGGER->Log(Takka::Logger::LOGLEV::FATAL, __VA_ARGS__)
+#define LERROR(...) LOGGER->Log(Takka::Logger::LOGLEV::ERROR, __VA_ARGS__)
+#define LWARN(...) LOGGER->Log(Takka::Logger::LOGLEV::WARN, __VA_ARGS__)
+#define LINFO(...) LOGGER->Log(Takka::Logger::LOGLEV::INFO, __VA_ARGS__)
+#define LDEBUG(...) LOGGER->Log(Takka::Logger::LOGLEV::DEBUG, __VA_ARGS__)
+#define LTRACE(...) LOGGER->Log(Takka::Logger::LOGLEV::TRACE, __VA_ARGS__)
 
 namespace Takka {
     class Logger
