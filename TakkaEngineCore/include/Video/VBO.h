@@ -6,7 +6,7 @@
 
 namespace Takka
 {
-	class VBO : public Buffer
+	class VBO : public virtual Buffer
 	{
 	public:
 		VBO();

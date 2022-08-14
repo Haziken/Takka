@@ -87,6 +87,9 @@ void Takka::VAO::Draw(Shader& shader, GLuint indent)
 {
 	shader.Use();
 	Bind();
-	glDrawElements(GL_TRIANGLES, ebo.GetIndices(), GL_UNSIGNED_INT, (void*)indent);
+	if (ebo.GetIndices() == 0)
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	else
+		glDrawElements(GL_TRIANGLES, ebo.GetIndices(), GL_UNSIGNED_INT, (void*)indent);
 	UnBind();
 }

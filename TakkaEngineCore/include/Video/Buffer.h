@@ -22,8 +22,8 @@ namespace Takka
 		void LoadData(Array<T>& data, GLenum renderType)
 		{
 			Bind();
-			glBufferData(type, data.getSizeOfData(), data.getData(), renderType);
-			sizeOfData = data.getSizeOfData();
+			glBufferData(type, data.GetSizeOfData(), data.GetData(), renderType);
+			sizeOfData = data.GetSizeOfData();
 			UnBind();
 		}
 
@@ -31,8 +31,8 @@ namespace Takka
 		void LoadSubData(Array<T>& data)
 		{
 			Bind();
-			glBufferSubData(type, sizeOfData, data.getSizeOfData(), data.getData());
-			sizeOfData += data.getSizeOfData();
+			glBufferSubData(type, sizeOfData, data.GetSizeOfData(), data.GetData());
+			sizeOfData += data.GetSizeOfData();
 			UnBind();
 		}
 

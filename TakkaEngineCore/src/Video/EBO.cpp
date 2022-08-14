@@ -5,7 +5,7 @@ Takka::EBO::EBO() : Buffer(GL_ELEMENT_ARRAY_BUFFER) {}
 Takka::EBO::EBO(Array<GLuint>& data, GLenum renderType) : Buffer(GL_ELEMENT_ARRAY_BUFFER)
 {
 	LoadData(data, renderType);
-	indices = data.getSizeOfVector();
+	indices = data.GetSizeOfVector();
 }
 
 Takka::EBO::EBO(EBO& buffer) : Buffer(buffer)

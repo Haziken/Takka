@@ -13,16 +13,43 @@ Takka::Texture::~Texture()
 	glDeleteTextures(1, &id);
 }
 
-void Takka::Texture::LoadTexture(const std::string& path)
+Takka::Texture::Texture(const Takka::Texture& texture)
 {
+	glGenTextures(1, &id);
+	TextureCopyData(texture, *this);
+}
+
+Takka::Texture::Texture(const Texture&& texture)
+{
+	glGenTextures(1, &id);
+	TextureCopyData(texture, *this);
+}
+
+Takka::Texture& Takka::Texture::operator=(const Takka::Texture& texture)
+{
+	TextureCopyData(texture, *this);
+	return *this;
+}
+
+Takka::Texture& Takka::Texture::operator=(const Texture&& texture)
+{
+	TextureCopyData(texture, *this);
+	return *this;
+}
+
+void Takka::Texture::LoadTexture(const std::string& path, Type type, GLenum target)
+{
+	this->type = type;
+	this->target = target;
+
 	Bind();
-	int w, h, nrCh;
+	int nrCh;
 	const char* d = path.c_str();
 	unsigned char* data = stbi_load(d, &w, &h, &nrCh, 0);
 	if (data)
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexImage2D(target, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(target);
 	}
 	stbi_image_free(data);
 	UnBind();
@@ -30,12 +57,12 @@ void Takka::Texture::LoadTexture(const std::string& path)
 
 void Takka::Texture::Bind()
 {
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(target, id);
 }
 
 void Takka::Texture::UnBind()
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(target, 0);
 }
 
 void Takka::Texture::Activate(GLenum texPref)
@@ -46,6 +73,35 @@ void Takka::Texture::Activate(GLenum texPref)
 void Takka::Texture::SetParameteri(GLenum param, GLint value)
 {
 	Bind();
-	glTexParameteri(GL_TEXTURE_2D, param, value);
+	glTexParameteri(target, param, value);
 	UnBind();
+}
+
+Takka::Texture::Type Takka::Texture::GetType()
+{
+	return type;
+}
+
+GLuint Takka::Texture::GetId()
+{
+	return id;
+}
+
+void Takka::Texture::TextureCopyData(const Texture& src, Texture& dst)
+{
+	if (src.target == dst.target)
+	{
+		glCopyImageSubData(
+			src.id, src.target, 0, 0, 0, 0,
+			dst.id, dst.target, 0, 0, 0, 0,
+			src.w, src.h, 1);
+		dst.type = src.type;
+		dst.w = src.w;
+		dst.h = src.h;
+		dst.target = src.target;
+	}
+	else
+	{
+		LERROR("Texture copy failed!");
+	}
 }

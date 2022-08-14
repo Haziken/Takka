@@ -6,6 +6,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include <Shader.h>
+#include <cmath>
 
 namespace Takka
 {
@@ -15,7 +16,7 @@ namespace Takka
 		DELCPY(Camera);
 		Camera(GLuint widht, GLuint height, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f),
-			float yaw = 90,
+			float yaw = 45,
 			float pitch = 0, float fov = 90);
 
 		void LoadMatrixInShader(Shader& sheder, std::string viewMatrixName = "view", std::string projectionMatrix = "project");

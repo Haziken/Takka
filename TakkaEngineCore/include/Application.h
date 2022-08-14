@@ -2,6 +2,9 @@
 #include <Utils.h>
 #include <Window.h>
 
+#include <chrono>
+#include <thread>
+
 namespace Takka
 {
     class Application
@@ -15,7 +18,7 @@ namespace Takka
         Window* GetWindow();
 
         virtual void Setup() {};
-        virtual void Update() {};
+        virtual void Update(float delta) {};
         virtual void Render() {};
 
         void Run();

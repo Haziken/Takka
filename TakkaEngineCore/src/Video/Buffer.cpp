@@ -19,7 +19,6 @@ Takka::Buffer& Takka::Buffer::operator=(Buffer& buffer)
 
 Takka::Buffer::~Buffer()
 {
-	std::cout << "Delete buffer: " << id << std::endl;
 	glDeleteBuffers(1, &id);
 }
 

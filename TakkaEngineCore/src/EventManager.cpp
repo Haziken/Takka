@@ -48,6 +48,7 @@ int Takka::EventManager::GetState(int key)
 
 void Takka::EventManager::SetInputMode(int mode, int flag)
 {
+    glfwSetInputMode(window, mode, flag);
 }
 
 std::string Takka::EventManager::GetKeyName(int key)

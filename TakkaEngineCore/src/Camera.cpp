@@ -20,7 +20,7 @@ glm::mat4 Takka::Camera::GetViewMatrix()
 
 glm::mat4 Takka::Camera::GetProjectMatrix()
 {
-	return glm::perspective(fov, 1.0f, 0.1f, 100.f);
+	return glm::perspective(glm::radians(fov), (float)w / (float)h, 0.1f, 100.f);
 }
 
 glm::vec3 Takka::Camera::GetPosition()
@@ -41,6 +41,7 @@ GLfloat Takka::Camera::GetYaw()
 void Takka::Camera::SetYaw(GLfloat yaw)
 {
 	this->yaw = yaw;
+	UpdateVectors();
 }
 
 GLfloat Takka::Camera::GetPitch()
@@ -50,7 +51,8 @@ GLfloat Takka::Camera::GetPitch()
 
 void Takka::Camera::SetPitch(GLfloat pitch)
 {
-	this->pitch = pitch;
+	this->pitch = std::max(std::min(pitch, (GLfloat)89.9), (GLfloat)-89.9);
+	UpdateVectors();
 }
 
 GLfloat Takka::Camera::GetFov()

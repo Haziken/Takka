@@ -34,6 +34,6 @@ std::string Takka::Logger::GetTime()
 {
 	auto t = std::time(nullptr);
 	std::ostringstream oss;
-	oss << std::put_time(std::localtime(&t), "%F:%T ");
+	oss << std::put_time(std::localtime(&t), "%T ");
 	return oss.str();
 }
