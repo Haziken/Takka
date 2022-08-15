@@ -10,3 +10,6 @@
 [submodule "TakkaEngineCore/externals/stb"]
 	path = TakkaEngineCore/externals/stb
 	url = https://github.com/nothings/stb
+[submodule "TakkaEngineCore/externals/OpenAL"]
+	path = TakkaEngineCore/externals/OpenAL
+	url = https://github.com/kcat/openal-soft.git
