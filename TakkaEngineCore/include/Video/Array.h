@@ -12,10 +12,10 @@ namespace Takka
 		Array();
 		Array(std::vector<T> data);
 		Array(T* data, size_t size);
-		Array(Array<T>& arr);
+		Array(const Array<T>& arr);
 
-		Array& operator=(Array<T>& arr);
-		Array& operator=(Array<T>&& arr);
+		Array& operator=(const Array<T>& arr);
+		Array& operator=(const Array<T>&& arr);
 
 		~Array();
 
@@ -60,20 +60,20 @@ namespace Takka
 	}
 
 	template<typename T>
-	inline Array<T>::Array(Array<T>& arr)
+	inline Array<T>::Array(const Array<T>& arr)
 	{
 		this->data = arr.data;
 	}
 
 	template<typename T>
-	inline Array<T>& Array<T>::operator=(Array<T>& arr)
+	inline Array<T>& Array<T>::operator=(const Array<T>& arr)
 	{
 		this->data = arr.data;
 		return *this;
 	}
 
 	template<typename T>
-	inline Array<T>& Array<T>::operator=(Array<T>&& arr)
+	inline Array<T>& Array<T>::operator=(const Array<T>&& arr)
 	{
 		data = arr.data;
 		return *this;

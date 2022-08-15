@@ -3,9 +3,9 @@
 out vec4 color;
 in vec2 texcrd;
 
-uniform sampler2D txt;
+uniform sampler2D diffuse1;
 
 void main()
 {
-    color = texture(txt, texcrd);
+    color = texture(diffuse1, texcrd);
 }

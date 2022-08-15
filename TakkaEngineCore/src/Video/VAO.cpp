@@ -24,6 +24,38 @@ Takka::VAO::VAO(VBO& vbo, EBO& ebo)
 	AddVBO(vbo);
 }
 
+Takka::VAO::VAO(const VAO& vao)
+{
+	this->attribVector = vao.attribVector;
+	this->vbo = vao.vbo;
+	this->ebo = vao.ebo;
+
+	this->Bind();
+	this->vbo.Bind();
+	this->ebo.Bind();
+	this->UnBind();
+
+	for (auto& i : attribVector.GetVector())
+		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)i.pointer, i.type, i.normalaized);
+}
+
+Takka::VAO& Takka::VAO::operator=(const VAO& vao)
+{
+	this->attribVector = vao.attribVector;
+	this->vbo = vao.vbo;
+	this->ebo = vao.ebo;
+
+	this->Bind();
+	this->vbo.Bind();
+	this->ebo.Bind();
+	this->UnBind();
+
+	for (auto& i : attribVector.GetVector())
+		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)i.pointer, i.type, i.normalaized);
+
+	return *this;
+}
+
 Takka::VAO::~VAO()
 {
 	glDeleteVertexArrays(1, &id);
@@ -81,6 +113,8 @@ void Takka::VAO::AddAttribPointer(GLuint id, GLuint size, GLuint dataSize, GLuin
 	glVertexAttribPointer(id, size, dataType, normalaze, dataSize, (void*)dataIndent);
 	EnableArray(id);
 	UnBind();
+
+	attribVector += AttribPointer(id, size, dataType, normalaze, dataSize, (void*)dataIndent);
 }
 
 void Takka::VAO::Draw(Shader& shader, GLuint indent)

@@ -18,21 +18,13 @@ namespace Takka {
 
         Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture);
 
-        Mesh(Mesh& mesh);
-        Mesh(Mesh&& mesh);
-
-        Mesh& operator=(Mesh& mesh);
-        Mesh& operator=(Mesh&& mesh);
+        Mesh(const Mesh& mesh);
+        Mesh& operator=(const Mesh& mesh);
 
         void Draw(Shader& sh);
 
     private:
-
-        void GenVAO();
-
         VAO vao;
-        Array<Vertex> vertices;
-        Array<GLuint> indices;
         Array<Texture> texture;
     };
 }

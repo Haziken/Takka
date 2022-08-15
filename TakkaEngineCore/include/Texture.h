@@ -27,12 +27,12 @@ namespace Takka {
         ~Texture();
 
         Texture(const Texture& texture);
-        Texture(const Texture&& texture);
 
         Texture& operator=(const Texture& texture);
-        Texture& operator=(const Texture&& texture);
 
         void LoadTexture(const std::string& path, Type type = Type::IMAGE, GLenum target = GL_TEXTURE_2D);
+
+        unsigned char* GetData();
 
         void Bind();
         void UnBind();

@@ -21,7 +21,7 @@ public:
         lastX = 400; lastY = 300;
         EVENTMANAGER->SetInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
        
-        md.LoadModel("../../RoomModel/Room.obj");
+        //md.LoadModel("../../RoomModel/Room.obj");
 
         cam = new Takka::Camera(800,600);
         cam->SetPosition(glm::vec3(0, 0, 3));
@@ -29,11 +29,9 @@ public:
         model = glm::mat4(1.0f);
 
         sh.CreateProgram(
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex.glsl"), 
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment.glsl"));
-
-        Takka::Texture t;
-
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex_texture.glsl"), 
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment_texture.glsl"));
+        
         tex.LoadTexture("../../TakkaEngineCore/Textures/texture1.jpg");
 
         vao.AddVBO(Takka::VBO(Takka::Array<GLfloat>({
@@ -81,6 +79,7 @@ public:
 
         vao.AddAttribPointer(0, 3, 5 * sizeof(GLfloat));
         vao.AddAttribPointer(1, 2, 5 * sizeof(GLfloat), 3 * sizeof(GLfloat));
+
     }
 
 
@@ -126,7 +125,10 @@ public:
     {
         cam->LoadMatrixInShader(sh, "view", "project");
         sh.LoadUniformData("model", model);
-        md.Draw(sh);
+        //md.Draw(sh);
+        tex.Activate(GL_TEXTURE0);
+        tex.Bind();
+        vao.Draw(sh);
     }
 
 private:

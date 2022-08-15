@@ -1,39 +1,29 @@
 #include <Mesh.h>
 
-Takka::Mesh::Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture) : vertices(vertices), indices(indices), texture(texture)
+Takka::Mesh::Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture) : texture(texture)
 {
-	GenVAO();
+	VBO vbo;
+	vbo.LoadData(vertices, GL_STATIC_DRAW);
+	EBO ebo(indices);
+
+	vao.AddVBO(vbo);
+	vao.AddEBO(ebo);
+
+	vao.AddAttribPointer(0, 3, sizeof(Vertex));
+	vao.AddAttribPointer(1, 3, sizeof(Vertex), offsetof(Vertex, Normal));
+	vao.AddAttribPointer(2, 2, sizeof(Vertex), offsetof(Vertex, TexCoords));
 }
 
-Takka::Mesh::Mesh(Mesh& mesh)
+Takka::Mesh::Mesh(const Mesh& mesh)
 {
-	vertices = mesh.vertices;
-	indices = mesh.indices;
 	texture = mesh.texture;
-	GenVAO();
+	vao = mesh.vao;
 }
 
-Takka::Mesh::Mesh(Mesh&& mesh)
+Takka::Mesh& Takka::Mesh::operator=(const Mesh& mesh)
 {
-	vertices = mesh.vertices;
-	indices = mesh.indices;
 	texture = mesh.texture;
-	GenVAO();
-}
-
-Takka::Mesh& Takka::Mesh::operator=(Mesh& mesh)
-{
-	vertices = mesh.vertices;
-	indices = mesh.indices;
-	texture = mesh.texture;
-	return *this;
-}
-
-Takka::Mesh& Takka::Mesh::operator=(Mesh&& mesh)
-{
-	vertices = mesh.vertices;
-	indices = mesh.indices;
-	texture = mesh.texture;
+	vao = mesh.vao;
 	return *this;
 }
 
@@ -47,7 +37,7 @@ void Takka::Mesh::Draw(Shader& sh)
 		Takka::Texture& tex = texture.GetVector().at(i);
 		if (tex.GetType() == Takka::Texture::Type::DIFFUSE)
 		{
-			sh.LoadUniformData(("material.diffuse" + std::to_string(diff++)), (float)i);
+			sh.LoadUniformData(("diffuse" + std::to_string(diff++)), (float)i);
 		}
 		else if (tex.GetType() == Takka::Texture::Type::SPECULAR)
 		{
@@ -57,18 +47,4 @@ void Takka::Mesh::Draw(Shader& sh)
 	}
 	glActiveTexture(GL_TEXTURE0);
 	vao.Draw(sh);
-}
-
-void Takka::Mesh::GenVAO()
-{
-	VBO vbo;
-	vbo.LoadData(vertices, GL_STATIC_DRAW);
-	EBO ebo(indices);
-
-	vao.AddVBO(vbo);
-	vao.AddEBO(ebo);
-
-	vao.AddAttribPointer(0, 3, sizeof(Vertex));
-	vao.AddAttribPointer(1, 3, sizeof(Vertex), offsetof(Vertex, Normal));
-	vao.AddAttribPointer(2, 2, sizeof(Vertex), offsetof(Vertex, TexCoords));
 }

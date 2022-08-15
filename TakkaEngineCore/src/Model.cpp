@@ -22,6 +22,7 @@ void Takka::Model::LoadModel(const std::string& path)
 	}
 	directory = path.substr(0, path.find_last_of('/'));
 	processNode(scene->mRootNode, scene);
+	
 }
 
 void Takka::Model::Draw(Shader& sh)
@@ -95,8 +96,9 @@ Takka::Array<Takka::Texture> Takka::Model::loadMaterialTexture(aiMaterial* mat, 
 		aiString str;
 		mat->GetTexture(type, i, &str);
 		Takka::Texture texture;
-		texture.LoadTexture(directory + str.C_Str(), typeName);
+		texture.LoadTexture(directory + "/" + str.C_Str(), typeName);
 		textures.push_back(texture);
+		LINFO("Texture load: ", directory + "/" + str.C_Str(), " , Type: ", (int)typeName);
 	}
 	return Takka::Array<Takka::Texture>(textures);
 }

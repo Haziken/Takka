@@ -10,8 +10,8 @@ namespace Takka
 	{
 	public:
 		Buffer(GLenum bufferType);
-		Buffer(Buffer& buffer);
-		Buffer& operator=(Buffer& buffer);
+		Buffer(const Buffer& buffer);
+		Buffer& operator=(const Buffer& buffer);
 		~Buffer();
 
 		void Bind();
@@ -36,7 +36,7 @@ namespace Takka
 			UnBind();
 		}
 
-		static void BufferCopyData(Buffer& readBuffer, Buffer& writeBuffer);
+		static void BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer);
 
 	private:
 		GLuint id;

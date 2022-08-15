@@ -1,1 +1,0 @@
-START bash.exe

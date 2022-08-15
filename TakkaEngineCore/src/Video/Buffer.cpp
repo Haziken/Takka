@@ -5,13 +5,13 @@ Takka::Buffer::Buffer(GLenum type) : type(type)
 	glGenBuffers(1, &id);
 }
 
-Takka::Buffer::Buffer(Buffer& buffer)
+Takka::Buffer::Buffer(const Buffer& buffer)
 {
 	glGenBuffers(1, &id);
 	BufferCopyData(buffer, *this);
 }
 
-Takka::Buffer& Takka::Buffer::operator=(Buffer& buffer)
+Takka::Buffer& Takka::Buffer::operator=(const Buffer& buffer)
 {
 	BufferCopyData(buffer, *this);
 	return *this;
@@ -37,7 +37,7 @@ GLuint Takka::Buffer::GetID()
 	return id;
 }
 
-void Takka::Buffer::BufferCopyData(Buffer& readBuffer, Buffer& writeBuffer)
+void Takka::Buffer::BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer)
 {
 	glBindBuffer(GL_COPY_READ_BUFFER, readBuffer.id);
 	glBindBuffer(GL_COPY_WRITE_BUFFER, writeBuffer.id);

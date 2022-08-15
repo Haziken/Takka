@@ -9,11 +9,13 @@ namespace Takka
 	class VAO
 	{
 	public:
-		DELCPY(VAO);
 		VAO();
 		VAO(VBO& vbo);
 		VAO(EBO& ebo);
 		VAO(VBO& vbo, EBO& ebo);
+
+		VAO(const VAO& vao);
+		VAO& operator=(const VAO& vao);
 
 		~VAO();
 
@@ -31,10 +33,22 @@ namespace Takka
 
 		void AddAttribPointer(GLuint id, GLuint size, GLuint dataSize, GLuint dataIndent = 0, GLenum dataType = GL_FLOAT, GLboolean normalaze = GL_FALSE);
 
-		void Draw(Shader& shader, GLuint indent = 0); // Shader
+		void Draw(Shader& shader, GLuint indent = 0);
 
 	private:
 		
+		struct AttribPointer
+		{
+			GLuint index;
+			GLuint size;
+			GLenum type;
+			GLboolean normalaized;
+			GLsizei stride;
+			const void* pointer;
+		};
+
+		Array<AttribPointer> attribVector;
+
 		GLuint id = 0;
 		VBO vbo;
 		EBO ebo;
