@@ -6,6 +6,10 @@ project(${PR_NAME})
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(UNIX)
+    set(CMAKE_CXX_FLAGS "-fpermissive")
+endif()
+
 file(GLOB_RECURSE SOURCE src/*.cpp)
 file(GLOB_RECURSE INCLUDE include/*.h)
 
