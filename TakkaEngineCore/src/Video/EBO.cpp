@@ -1,4 +1,4 @@
-#include <Video/EBO.h>
+#include "../../include/Video/EBO.h"
 
 Takka::EBO::EBO() : Buffer(GL_ELEMENT_ARRAY_BUFFER) {}
 

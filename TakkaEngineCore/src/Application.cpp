@@ -1,5 +1,5 @@
-#include <Application.h>
-#include <Logger.h>
+#include "../include/Application.h"
+#include "../include/Logger.h"
 Takka::Application::Application(std::string title, GLuint w, GLuint h)
 {
 	win = new Window(title, w, h);

@@ -1,4 +1,4 @@
-#include <Video/Buffer.h>
+#include "../../include/Video/Buffer.h"
 
 Takka::Buffer::Buffer(GLenum type) : type(type)
 {

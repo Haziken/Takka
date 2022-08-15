@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Video/VAO.h>
-#include <Texture.h>
+#include "Video/VAO.h"
+#include "Texture.h"
 #include <sstream>
 
 namespace Takka {

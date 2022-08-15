@@ -1,4 +1,4 @@
-#include <Window.h>
+#include "../include/Window.h"
 
 Takka::Window::Window(std::string title, GLint w, GLint h) : w(w), h(h)
 {

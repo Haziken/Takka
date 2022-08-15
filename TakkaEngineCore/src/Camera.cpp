@@ -1,4 +1,4 @@
-#include <Camera.h>
+#include "../include/Camera.h"
 
 Takka::Camera::Camera(GLuint widht, GLuint height, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov)
 	: position(position), worldUp(worldUp), yaw(yaw), pitch(pitch), fov(fov), w(widht), h(height)

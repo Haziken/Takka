@@ -1,4 +1,4 @@
-#include <Shader.h>
+#include "../include/Shader.h"
 
 Takka::Shader::Shader() {}
 

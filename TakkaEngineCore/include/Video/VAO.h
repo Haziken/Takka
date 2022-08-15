@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Video/VBO.h>
-#include <Video/EBO.h>
-#include <Shader.h>
+#include "VBO.h"
+#include "EBO.h"
+#include "../Shader.h"
 
 namespace Takka
 {

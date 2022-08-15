@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Video/Buffer.h>
+#include "Buffer.h"
 
 namespace Takka
 {

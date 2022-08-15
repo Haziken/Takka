@@ -1,8 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Utils.h>
-#include <Video/Array.h>
+#include "Video/Array.h"
 
 namespace Takka
 {

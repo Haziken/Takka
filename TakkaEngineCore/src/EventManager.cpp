@@ -1,4 +1,4 @@
-#include "EventManager.h"
+#include "../include/EventManager.h"
 
 Takka::EventManager::EventManager() {}
 

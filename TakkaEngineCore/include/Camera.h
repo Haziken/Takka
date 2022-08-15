@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Utils.h>
+#include "Utils.h"
 #include <glad/glad.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-#include <Shader.h>
+#include "Shader.h"
 #include <cmath>
 
 namespace Takka

@@ -1,4 +1,4 @@
-#include <Video/VBO.h>
+#include "../../include/Video/VBO.h"
 
 Takka::VBO::VBO() : Buffer(GL_ARRAY_BUFFER) {}
 

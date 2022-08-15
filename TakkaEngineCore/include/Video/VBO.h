@@ -1,8 +1,7 @@
 #pragma once
 
-#include <Utils.h>
-#include <Video/Buffer.h>
-#include <Video/Array.h>
+#include "Buffer.h"
+#include "Array.h"
 
 namespace Takka
 {

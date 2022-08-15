@@ -1,4 +1,4 @@
-#include <Mesh.h>
+#include "../include/Mesh.h"
 
 Takka::Mesh::Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture) : texture(texture)
 {

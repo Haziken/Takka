@@ -28,6 +28,10 @@ add_subdirectory(externals/glm)
 target_link_libraries(${PR_NAME} PRIVATE glm::glm)
 target_include_directories(${PR_NAME} PUBLIC externals/glm/glm)
 
+add_subdirectory(externals/OpenAL)
+target_link_libraries(${PR_NAME} PRIVATE OpenAL)
+target_include_directories(${PR_NAME} PUBLIC externals/OpenAL/include)
+
 
 target_include_directories(${PR_NAME} PUBLIC externals/stb)
 
