@@ -36,7 +36,7 @@ Takka::VAO::VAO(const VAO& vao)
 	this->UnBind();
 
 	for (auto& i : attribVector.GetVector())
-		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)i.pointer, i.type, i.normalaized);
+		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)(i.pointer), i.type, i.normalaized);
 }
 
 Takka::VAO& Takka::VAO::operator=(const VAO& vao)
@@ -51,7 +51,7 @@ Takka::VAO& Takka::VAO::operator=(const VAO& vao)
 	this->UnBind();
 
 	for (auto& i : attribVector.GetVector())
-		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)i.pointer, i.type, i.normalaized);
+		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)(i.pointer), i.type, i.normalaized);
 
 	return *this;
 }

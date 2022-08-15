@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Logger.h>
+#include "Logger.h"
 
 namespace Takka {
     class Texture
