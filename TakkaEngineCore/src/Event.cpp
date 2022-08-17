@@ -5,3 +5,8 @@ Takka::Event::Event() noexcept
 {
 	REGEVENT;
 }
+
+Takka::Event::~Event() noexcept
+{
+	DELEVENT
+}

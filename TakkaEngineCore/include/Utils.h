@@ -22,9 +22,4 @@ namespace Takka
 		ss << std::put_time(std::localtime(&forFormat), format.c_str());
 		return ss.str();
 	}
-
-	inline double const GetTimeMS()
-	{
-		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-	}
 }

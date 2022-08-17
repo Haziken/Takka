@@ -14,18 +14,18 @@ Takka::Application& Takka::Application::operator=(Application&& app) noexcept
 
 Takka::Application::Application(std::string title, GLuint w, GLuint h) noexcept
 {
-	win = new Window(title, w, h);
+	win = Window(title, w, h);
 }
 
-Takka::Application::Application(Window* win) noexcept : win(win)
+Takka::Application::Application(Window&& win) noexcept : win(std::move(win))
 {}
 
 Takka::Application::~Application() noexcept
 {
-	win->~Window();
+	win.~Window();
 }
 
-Takka::Window* Takka::Application::GetWindow()
+Takka::Window& Takka::Application::GetWindow()
 {
 	return win;
 }
@@ -36,7 +36,7 @@ void Takka::Application::Run()
 	using namespace std::chrono_literals;
 	Setup();
 	auto delta = std::chrono::high_resolution_clock::now();
-	while(!glfwWindowShouldClose(win->GetWindow()))
+	while(!glfwWindowShouldClose(win.GetWindow()))
 	{
 		auto start = std::chrono::high_resolution_clock::now();
 		glClearColor(0.5, 0.5, 0.5, 1.0f);
@@ -47,7 +47,7 @@ void Takka::Application::Run()
 		delta = std::chrono::high_resolution_clock::now();
 		Render();
 		auto end = std::chrono::high_resolution_clock::now();
-		glfwSwapBuffers(win->GetWindow());
+		glfwSwapBuffers(win.GetWindow());
 		std::this_thread::sleep_for(16ms - (end - start));
 	}
 }

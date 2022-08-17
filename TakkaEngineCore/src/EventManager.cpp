@@ -17,6 +17,7 @@ void Takka::EventManager::Init(GLFWwindow* window)
     glfwSetCursorEnterCallback(window, EventManager::CursorEnterEvent);
     glfwSetScrollCallback(window, EventManager::ScrollEvent);
     glfwSetMouseButtonCallback(window, EventManager::MouseButtonEvent);
+    glfwSetWindowSizeCallback(window, EventManager::WindowReSize);
 }
 
 void Takka::EventManager::Registrate(Event* e)
@@ -123,6 +124,11 @@ void Takka::EventManager::SetClipboardString(std::string text)
 {
 }
 
+void Takka::EventManager::GetWindowSize(int& w, int& h)
+{
+    glfwGetWindowSize(window, &w, &h);
+}
+
 // Main event
 
 void Takka::EventManager::KeyboardEvent(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -166,6 +172,12 @@ void Takka::EventManager::ScrollEvent(GLFWwindow* window, double xoffset, double
 {
     for (auto i : EVENTMANAGER->GetEventList())
         i->Scroll(xoffset, yoffset);
+}
+
+void Takka::EventManager::WindowReSize(GLFWwindow* window, int w, int h)
+{
+    for (auto i : EVENTMANAGER->GetEventList())
+        i->WindowResize(w, h);
 }
 
 std::vector<Takka::Event*>& Takka::EventManager::GetEventList()

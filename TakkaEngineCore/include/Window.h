@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include "Logger.h"
 #include <string>
 
 namespace Takka
@@ -10,6 +10,8 @@ namespace Takka
 	class Window
 	{
 	public:
+
+		Window() noexcept {}
 
 		Window(const Window&) = delete;
 		Window(Window&& win) noexcept;

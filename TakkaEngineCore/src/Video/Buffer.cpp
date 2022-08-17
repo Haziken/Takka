@@ -3,33 +3,28 @@
 Takka::Buffer::Buffer(GLenum type) noexcept : type(type)
 {
 	glGenBuffers(1, &id);
-	LDEBUG("Buffer: ", id, " created");
 }
 
 Takka::Buffer::Buffer(const Buffer& buffer) noexcept
 {
 	glGenBuffers(1, &id);
 	BufferCopyData(buffer, *this);
-	LDEBUG("Buffer: ", buffer.id, " copy to: ", id);
 }
 
 Takka::Buffer::Buffer(Buffer&& buffer) noexcept
 {
 	Swap(*this, buffer);
-	LDEBUG("Buffer: ", id, " moved");
 }
 
 Takka::Buffer& Takka::Buffer::operator=(const Buffer& buffer) noexcept
 {
 	BufferCopyData(buffer, *this);
-	LDEBUG("Buffer: ", buffer.id, " copy to: ", id);
 	return *this;
 }
 
 Takka::Buffer& Takka::Buffer::operator=(Buffer&& buffer) noexcept
 {
 	Swap(*this, buffer);
-	LDEBUG("Buffer: ", id, " moved");
 	return *this;
 }
 

@@ -24,19 +24,19 @@ Takka::Window::Window(std::string title, GLint w, GLint h) noexcept : w(w), h(h)
 	window = glfwCreateWindow(w, h, title.c_str(), NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, w, h);
 }
 
 Takka::Window::~Window() noexcept
 {
 	glfwDestroyWindow(window);
-	glfwTerminate();
+	if(window) glfwTerminate();
 }
 
 void Takka::Window::GetSize(GLuint& w, GLuint& h)
 {
+	w = this->w;
+	h = this->h;
 }
 
 GLFWwindow* Takka::Window::GetWindow()

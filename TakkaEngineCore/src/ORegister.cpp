@@ -1,4 +1,4 @@
-#include "ORegister.h"
+#include "../include/ORegister.h"
 
 Takka::ObjectRegister& Takka::ObjectRegister::instance()
 {

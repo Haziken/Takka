@@ -7,10 +7,13 @@
 #include <gtc/type_ptr.hpp>
 #include "Shader.h"
 #include <cmath>
+#include <GLFW/glfw3.h>
+#include "Window.h"
+#include "Event.h"
 
 namespace Takka
 {
-	class Camera
+	class Camera : virtual public Event
 	{
 	public:
 
@@ -21,12 +24,13 @@ namespace Takka
 		Camera& operator=(Camera&& cam) noexcept;
 
 		Camera(
-			GLuint widht = 0, 
-			GLuint height = 1, // zero division
+			Window& win, // zero division
 			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f),
 			float yaw = 45,
 			float pitch = 0, float fov = 90) noexcept;
+
+		Camera() noexcept;
 
 		~Camera() noexcept;
 
@@ -50,6 +54,8 @@ namespace Takka
 		glm::vec3 GetFront();
 		glm::vec3 GetRight();
 
+		void WindowResize(int w, int h) override;
+
 	private:
 		void UpdateVectors();
 
@@ -64,6 +70,6 @@ namespace Takka
 		// Camera settings
 		GLfloat fov;
 
-		GLuint w, h;
+		GLuint w = 0, h = 1;
 	};
 }

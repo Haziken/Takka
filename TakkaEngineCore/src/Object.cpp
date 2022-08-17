@@ -1,6 +1,6 @@
-#include "Object.h"
+#include "../include/Object.h"
 
-#include "ORegister.h"
+#include "../include/ORegister.h"
 
 Takka::TObject::TObject(const std::string& name, glm::mat4 model) noexcept : name(name), model(model)
 {

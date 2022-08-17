@@ -19,11 +19,11 @@ namespace Takka
         Application& operator=(Application&& app) noexcept;
 
         Application(std::string title, GLuint w, GLuint h) noexcept;
-        Application(Window* win) noexcept;
+        Application(Window&& win) noexcept;
 
         ~Application() noexcept;
 
-        Window* GetWindow();
+        Window& GetWindow();
 
         virtual void Setup() {};
         virtual void Update(float delta) {};
@@ -32,6 +32,6 @@ namespace Takka
         void Run();
 
     private:
-        Window* win = nullptr;
+        Window win;
     };
 }

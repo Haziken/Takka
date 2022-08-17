@@ -1,12 +1,12 @@
 #include "../include/Camera.h"
 
 Takka::Camera::Camera(const Camera& cam) noexcept
-	: fov(cam.fov), worldUp(cam.worldUp), position(cam.position), w(cam.w), h(cam.h), pitch(cam.pitch), yaw(cam.yaw)
+	: fov(cam.fov), worldUp(cam.worldUp), position(cam.position), w(cam.w), h(cam.h), pitch(cam.pitch), yaw(cam.yaw), Event()
 {
 	UpdateVectors();
 }
 
-Takka::Camera::Camera(Camera&& cam) noexcept
+Takka::Camera::Camera(Camera&& cam) noexcept : Event()
 {
 	std::swap(this->h, cam.h);
 	std::swap(this->w, cam.w);
@@ -41,9 +41,22 @@ Takka::Camera& Takka::Camera::operator=(Camera&& cam) noexcept
 	return *this;
 }
 
-Takka::Camera::Camera(GLuint widht, GLuint height, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov) noexcept
-	: position(position), worldUp(worldUp), yaw(yaw), pitch(pitch), fov(fov), w(widht), h(height)
+Takka::Camera::Camera(Window& win, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov) noexcept
+	: position(position), worldUp(worldUp), yaw(yaw), pitch(pitch), fov(fov), Event()
 {
+	win.GetSize(w, h);
+	UpdateVectors();
+}
+
+Takka::Camera::Camera() noexcept : Event()
+{
+	position = glm::vec3(0.0f, 0.0f, 0.0f);
+	worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	yaw = 45;
+	pitch = 0;
+	fov = 90;
+	w = 0;
+	h = 1;
 	UpdateVectors();
 }
 
@@ -126,4 +139,11 @@ void Takka::Camera::UpdateVectors()
 	front = glm::normalize(front);
 	right = glm::normalize(glm::cross(front, worldUp));
 	up = glm::normalize(glm::cross(right, front));
+}
+
+void Takka::Camera::WindowResize(int w, int h)
+{
+	this->w = w;
+	this->h = h;
+	glViewport(0, 0, w, h);
 }

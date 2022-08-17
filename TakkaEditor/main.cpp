@@ -13,7 +13,7 @@ class App : public Takka::Application, public virtual Takka::Event
 public:
     App() : Application("test", 800, 600), Event()
     {
-        EVENTMANAGER->Init(this->GetWindow()->GetWindow());
+        EVENTMANAGER->Init(this->GetWindow().GetWindow());
     }
 
     void Setup() override
@@ -21,11 +21,12 @@ public:
         lastX = 400; lastY = 300;
         EVENTMANAGER->SetInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
        
-        md.LoadModel("../../bg.obj");
+        md.LoadModel("../../bedrock.obj");
 
-        cam = Takka::Camera(800,600);
+        cam = Takka::Camera(GetWindow());
         cam.SetPosition(glm::vec3(0, 0, 3));
         cam.SetYaw(270);
+        cam.SetFov(90);
         model = glm::mat4(1.0f);
 
         sh.CreateProgram(
@@ -53,6 +54,14 @@ public:
         {
             cam.SetPosition(cam.GetPosition() + cam.GetRight() * 0.01f * delta);
         }
+        if (EVENTMANAGER->GetState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        {
+            cam.SetPosition(cam.GetPosition() - glm::vec3(0.0f, 1.0f, 0.0f) * 0.01f * delta);
+        }
+        if (EVENTMANAGER->GetState(GLFW_KEY_SPACE) == GLFW_PRESS)
+        {
+            cam.SetPosition(cam.GetPosition() + glm::vec3(0.0f, 1.0f, 0.0f) * 0.01f * delta);
+        }
     }
 
     void CursorPosition(double x, double y) override
@@ -68,7 +77,7 @@ public:
 
     void KeyPress(int key, int mode) override
     {
-        if (key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(GetWindow()->GetWindow(), GLFW_TRUE);
+        if (key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(GetWindow().GetWindow(), GLFW_TRUE);
     }
 
     void Render() override

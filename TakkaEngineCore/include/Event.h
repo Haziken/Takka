@@ -7,6 +7,7 @@ namespace Takka { // Event interface
     {
     public:
         Event() noexcept;
+        ~Event() noexcept;
         
         virtual void KeyPress(int key, int mods) {}
         virtual void KeyRepeat(int key, int mods) {}
@@ -26,5 +27,7 @@ namespace Takka { // Event interface
         virtual void JoysticDisconnect(int joysticUd) {}
 
         virtual void PathDrop(std::string path) {}
+
+        virtual void WindowResize(int w, int h) {}
     };
 }

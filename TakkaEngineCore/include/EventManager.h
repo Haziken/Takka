@@ -6,6 +6,7 @@
 #define EVENTMANAGER Takka::EventManager::instance()
 
 #define REGEVENT EVENTMANAGER->Registrate(this);
+#define DELEVENT EVENTMANAGER->Delete(this);
 
 namespace Takka
 {
@@ -44,6 +45,8 @@ namespace Takka
 		std::string GetClipboardString();
 		void SetClipboardString(std::string text);
 
+		void GetWindowSize(int& w, int& h);
+
 	private:
 		EventManager();
 
@@ -58,6 +61,7 @@ namespace Takka
 		static void CursorEnterEvent(GLFWwindow* window, int entered);
 		static void MouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
 		static void ScrollEvent(GLFWwindow* window, double xoffset, double yoffset);
+		static void WindowReSize(GLFWwindow* window, int w, int h);
 
 		std::vector<Event*>& GetEventList();
 
