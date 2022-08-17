@@ -13,3 +13,6 @@
 [submodule "TakkaEngineCore/externals/OpenAL"]
 	path = TakkaEngineCore/externals/OpenAL
 	url = https://github.com/kcat/openal-soft.git
+[submodule "TakkaEditor/externals/ImGUI"]
+	path = TakkaEditor/externals/ImGUI
+	url = https://github.com/ocornut/imgui.git
