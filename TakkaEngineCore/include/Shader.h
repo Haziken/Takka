@@ -5,19 +5,24 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-
+#include "Logger.h"
 
 namespace Takka
 {
 	class Shader
 	{
 	public:
-		DELCPY(Shader);
 
-		Shader();
-		Shader(GLuint id);
-		Shader(const std::string& vertex, const std::string& fragment);
-		~Shader();
+		Shader(const Shader&) = delete;
+		Shader(Shader&& sh) noexcept;
+
+		Shader& operator=(const Shader&) = delete;
+		Shader& operator=(Shader&& sh) noexcept;
+
+		Shader() noexcept;
+		Shader(GLuint id) noexcept;
+		Shader(const std::string& vertex, const std::string& fragment) noexcept;
+		~Shader() noexcept;
 
 		GLuint GetID();
 

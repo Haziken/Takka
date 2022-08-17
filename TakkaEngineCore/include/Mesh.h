@@ -16,10 +16,13 @@ namespace Takka {
             glm::vec2 TexCoords;
         };
 
-        Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture);
+        Mesh(Array<Vertex> vertices, Array<GLuint> indices, Array<Texture> texture) noexcept;
 
-        Mesh(const Mesh& mesh);
-        Mesh& operator=(const Mesh& mesh);
+        Mesh(const Mesh& mesh) noexcept;
+        Mesh(Mesh&& mesh) noexcept;
+
+        Mesh& operator=(const Mesh& mesh) noexcept;
+        Mesh& operator=(Mesh&& mesh) noexcept;
 
         void Draw(Shader& sh);
 

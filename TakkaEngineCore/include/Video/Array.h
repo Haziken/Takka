@@ -8,15 +8,17 @@ namespace Takka
 	class Array
 	{
 	public:
-		Array();
-		Array(std::vector<T> data);
-		Array(T* data, size_t size);
-		Array(const Array<T>& arr);
+		Array() noexcept;
+		Array(const std::vector<T> data) noexcept;
+		Array(T* data, size_t size) noexcept;
 
-		Array& operator=(const Array<T>& arr);
-		Array& operator=(const Array<T>&& arr);
+		Array(const Array<T>& arr) noexcept;
+		Array(Array<T>&& arr) noexcept;
 
-		~Array();
+		Array& operator=(const Array<T>& arr) noexcept;
+		Array& operator=(Array<T>&& arr) noexcept;
+
+		~Array() noexcept;
 
 		std::vector<T>& GetVector();
 		T* GetData();
@@ -24,62 +26,66 @@ namespace Takka
 		size_t GetSizeOfData();	
 
 		Array& operator+=(Array&& arr);
-		Array& operator+(Array&& arr);
-
-		Array& operator+=(T&& val);
-		Array& operator+(T&& val);
-
 		Array& operator+=(Array& arr);
-		Array& operator+(Array& arr);
-
+		Array& operator+=(T&& val);
 		Array& operator+=(T& val);
+
+		Array& operator+(Array&& arr);
+		Array& operator+(Array& arr);
+		Array& operator+(T&& val);
 		Array& operator+(T& val);
 
-		void Add(Array& arr);
-		void Add(T& val);
-
 		void Add(Array&& arr);
+		void Add(Array& arr);
+
 		void Add(T&& val);
+		void Add(T& val);
 
 	private:
 		std::vector<T> data;
 	};
 
 	template<typename T>
-	inline Array<T>::Array() {}
+	inline Array<T>::Array() noexcept {}
 
 	template<typename T>
-	inline Array<T>::Array(std::vector<T> data) : data(data) {}
+	inline Array<T>::Array(std::vector<T> data) noexcept : data(data) {}
 
 	template<typename T>
-	inline Array<T>::Array(T* data, size_t size)
+	inline Array<T>::Array(T* data, size_t size) noexcept
 	{
 		for (size_t i = 0; i < size; ++i)
 			this->data.push_back(data[i]);
 	}
 
 	template<typename T>
-	inline Array<T>::Array(const Array<T>& arr)
+	inline Array<T>::Array(const Array<T>& arr) noexcept
 	{
 		this->data = arr.data;
 	}
 
 	template<typename T>
-	inline Array<T>& Array<T>::operator=(const Array<T>& arr)
+	inline Array<T>::Array(Array<T>&& arr) noexcept
+	{
+		std::swap(this->data, arr.data);
+	}
+
+	template<typename T>
+	inline Array<T>& Array<T>::operator=(const Array<T>& arr) noexcept
 	{
 		this->data = arr.data;
 		return *this;
 	}
 
 	template<typename T>
-	inline Array<T>& Array<T>::operator=(const Array<T>&& arr)
+	inline Array<T>& Array<T>::operator=(Array<T>&& arr) noexcept
 	{
-		data = arr.data;
+		std::swap(this->data, arr.data);
 		return *this;
 	}
 
 	template<typename T>
-	inline Array<T>::~Array() {}
+	inline Array<T>::~Array() noexcept {}
 
 	template<typename T>
 	inline std::vector<T>& Array<T>::GetVector()
@@ -108,71 +114,71 @@ namespace Takka
 	template<typename T>
 	inline Array<T>& Array<T>::operator+=(Array&& arr)
 	{
-		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
+		Add(arr);
 		return *this;
 	}
 	template<typename T>
-	inline Array<T>& Array<T>::operator+(Array&& arr)
+	inline Array<T>& Array<T>::operator+=(Array& arr)
 	{
-		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
+		Add(arr);
 		return *this;
 	}
 	template<typename T>
 	inline Array<T>& Array<T>::operator+=(T&& val)
 	{
-		data.push_back(val);
-		return *this;
-	}
-	template<typename T>
-	inline Array<T>& Array<T>::operator+(T&& val)
-	{
-		data.push_back(val);
-		return *this;
-	}
-
-	template<typename T>
-	inline Array<T>& Array<T>::operator+=(Array& arr)
-	{
-		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
-		return *this;
-	}
-	template<typename T>
-	inline Array<T>& Array<T>::operator+(Array& arr)
-	{
-		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
+		Add(val);
 		return *this;
 	}
 	template<typename T>
 	inline Array<T>& Array<T>::operator+=(T& val)
 	{
-		data.push_back(val);
+		Add(val);
+		return *this;
+	}
+	
+	template<typename T>
+	inline Array<T>& Array<T>::operator+(Array&& arr)
+	{
+		Add(arr);
+		return *this;
+	}
+	template<typename T>
+	inline Array<T>& Array<T>::operator+(Array& arr)
+	{
+		Add(arr);
+		return *this;
+	}
+	template<typename T>
+	inline Array<T>& Array<T>::operator+(T&& val)
+	{
+		Add(val);
 		return *this;
 	}
 	template<typename T>
 	inline Array<T>& Array<T>::operator+(T& val)
 	{
-		data.push_back(val);
+		Add(val);
 		return *this;
 	}
 
 	template<typename T>
-	inline void Array<T>::Add(Array& arr)
-	{
-		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
-	}
-	template<typename T>
-	inline void Array<T>::Add(T& val)
-	{
-		data.push_back(val);
-	}
-	template<typename T>
-
 	inline void Array<T>::Add(Array&& arr)
 	{
 		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
 	}
 	template<typename T>
+	inline void Array<T>::Add(Array& arr)
+	{
+		data.insert(data.end(), arr.GetVector().begin(), arr.GetVector().end());
+	}
+	
+	template<typename T>
 	inline void Array<T>::Add(T&& val)
+	{
+		data.push_back(val);
+	}
+	template<typename T>
+	inline void Array<T>::Add(T& val)
 	{
 		data.push_back(val);
 	}

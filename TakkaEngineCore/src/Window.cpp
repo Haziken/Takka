@@ -1,6 +1,19 @@
 #include "../include/Window.h"
 
-Takka::Window::Window(std::string title, GLint w, GLint h) : w(w), h(h)
+Takka::Window::Window(Window&& win) noexcept : w(win.w), h(win.h)
+{
+	std::swap(this->window, win.window);
+}
+
+Takka::Window& Takka::Window::operator=(Window&& win) noexcept
+{
+	this->w = win.w;
+	this->h = win.h;
+	std::swap(this->window, win.window);
+	return *this;
+}
+
+Takka::Window::Window(std::string title, GLint w, GLint h) noexcept : w(w), h(h)
 {
 	glfwInit();
 
@@ -16,7 +29,7 @@ Takka::Window::Window(std::string title, GLint w, GLint h) : w(w), h(h)
 	glViewport(0, 0, width, height);
 }
 
-Takka::Window::~Window()
+Takka::Window::~Window() noexcept
 {
 	glfwDestroyWindow(window);
 	glfwTerminate();

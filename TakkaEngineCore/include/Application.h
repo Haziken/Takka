@@ -4,16 +4,24 @@
 
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 namespace Takka
 {
     class Application
     {
     public:
-        DELCPY(Application);
         Application() = delete;
-        Application(std::string title, GLuint w, GLuint h);
-        Application(Window* win);
+        Application(const Application& app) = delete;
+        Application(Application&& app) noexcept;
+
+        Application& operator=(const Application& app) = delete;
+        Application& operator=(Application&& app) noexcept;
+
+        Application(std::string title, GLuint w, GLuint h) noexcept;
+        Application(Window* win) noexcept;
+
+        ~Application() noexcept;
 
         Window* GetWindow();
 

@@ -5,22 +5,52 @@
 
 #include <stdlib.h>
 
-Takka::Texture::Texture()
+Takka::Texture::Texture() noexcept
 {
 	glGenTextures(1, &id);
 }
 
-Takka::Texture::~Texture()
+Takka::Texture::Texture(const std::string& path, Type type, GLenum target) noexcept
+{
+	glGenTextures(1, &id);
+	LoadTexture(path, type, target);
+}
+
+Takka::Texture::~Texture() noexcept
 {
 	glDeleteTextures(1, &id);
 }
 
-Takka::Texture::Texture(const Takka::Texture& texture)
+Takka::Texture::Texture(const Takka::Texture& texture) noexcept
 {
+	glGenTextures(1, &id);
+	TextureCopyData(texture, *this);
 }
 
-Takka::Texture& Takka::Texture::operator=(const Takka::Texture& texture)
+Takka::Texture::Texture(Texture&& texture) noexcept
 {
+	std::swap(this->id, texture.id);
+	std::swap(this->w, texture.w);
+	std::swap(this->h, texture.h);
+	std::swap(this->type, texture.type);
+	std::swap(this->target, texture.target);
+	LDEBUG("Texture ", texture.id, " move to: ", id);
+}
+
+Takka::Texture& Takka::Texture::operator=(const Takka::Texture& texture) noexcept
+{
+	TextureCopyData(texture, *this);
+	return *this;
+}
+
+Takka::Texture& Takka::Texture::operator=(Texture&& texture) noexcept
+{
+	std::swap(this->id, texture.id);
+	std::swap(this->w, texture.w);
+	std::swap(this->h, texture.h);
+	std::swap(this->type, texture.type);
+	std::swap(this->target, texture.target);
+	LDEBUG("Texture ", texture.id, " move to: ", id);
 	return *this;
 }
 
@@ -44,11 +74,15 @@ void Takka::Texture::LoadTexture(const std::string& path, Type type, GLenum targ
 
 unsigned char* Takka::Texture::GetData()
 {
-	unsigned char* data = (unsigned char*)malloc(sizeof(unsigned char) * w * h * 3);
+	unsigned char* texturedata = (unsigned char*)malloc(sizeof(unsigned char) * w * h * 3);
 	Bind();
-	glGetTexImage(target, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGetTexImage(target, 0, GL_RGB, GL_UNSIGNED_BYTE, texturedata);
 	UnBind();
-	return data;
+
+	LINFO(texturedata);
+	//free(texturedata);
+
+	return 0;
 }
 
 void Takka::Texture::Bind()
@@ -87,23 +121,22 @@ void Takka::Texture::TextureCopyData(const Texture& src, Texture& dst)
 {
 	if (src.target == dst.target)
 	{
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-		//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		dst.Bind();
+		glTexImage2D(dst.target, 0, GL_RGB, src.w, src.h, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+		glGenerateMipmap(dst.target);
+		glCopyImageSubData(
+			src.id, src.target, 0, 0, 0, 0,
+			dst.id, dst.target, 0, 0, 0, 0, 
+			src.w, src.h, 0);
+		dst.w = src.w;
+		dst.h = src.h;
+		dst.type = src.type;
+
+		GLenum error;
+		if ((error = glGetError()) != GL_NO_ERROR)
+		{
+			std::cout << std::hex << error << std::endl;
+		}
 	}
 	else
 	{

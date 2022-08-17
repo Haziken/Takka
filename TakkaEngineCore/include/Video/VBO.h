@@ -8,9 +8,13 @@ namespace Takka
 	class VBO : public virtual Buffer
 	{
 	public:
-		VBO();
-		VBO(Array<GLfloat>& vertexes, GLenum renderType = GL_STATIC_DRAW);
-		VBO(const VBO& buffer);
-		VBO& operator=(const VBO& buffer);
+		VBO() noexcept;
+		VBO(Array<GLfloat>& vertexes, GLenum renderType = GL_STATIC_DRAW) noexcept;
+
+		VBO(const VBO& buffer) noexcept;
+		VBO(VBO&& buffer) noexcept;
+
+		VBO& operator=(const VBO& buffer) noexcept;
+		VBO& operator=(VBO&& buffer) noexcept;
 	};
 }

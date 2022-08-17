@@ -13,11 +13,22 @@ namespace Takka
 	class Camera
 	{
 	public:
-		DELCPY(Camera);
-		Camera(GLuint widht, GLuint height, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+
+		Camera(const Camera& cam) noexcept;
+		Camera(Camera&& cam) noexcept;
+
+		Camera& operator=(const Camera& cam) noexcept;
+		Camera& operator=(Camera&& cam) noexcept;
+
+		Camera(
+			GLuint widht = 0, 
+			GLuint height = 1, // zero division
+			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f),
 			float yaw = 45,
-			float pitch = 0, float fov = 90);
+			float pitch = 0, float fov = 90) noexcept;
+
+		~Camera() noexcept;
 
 		void LoadMatrixInShader(Shader& sheder, std::string viewMatrixName = "view", std::string projectionMatrix = "project");
 
@@ -42,11 +53,11 @@ namespace Takka
 	private:
 		void UpdateVectors();
 
-		glm::vec3 position;
-		glm::vec3 front;
-		glm::vec3 up;
-		glm::vec3 right;
+		glm::vec3 up = glm::vec3(0.f);
+		glm::vec3 front = glm::vec3(0.f);
+		glm::vec3 right = glm::vec3(0.f);
 		glm::vec3 worldUp;
+		glm::vec3 position;
 		// Euler angles
 		GLfloat yaw;
 		GLfloat pitch;

@@ -16,12 +16,14 @@ Takka::Logger* Takka::Logger::Instance()
 void Takka::Logger::Init(const std::string& PathToLogFile)
 {
 	logFile.open(PathToLogFile, std::ios_base::trunc);
+}
+
+Takka::Logger::Logger()
+{
 #ifdef WIN32
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif // WIN32
 }
-
-Takka::Logger::Logger() {}
 
 #ifdef WIN32
 void Takka::Logger::SetConsoleColor(uint16_t color)

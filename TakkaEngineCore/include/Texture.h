@@ -22,12 +22,15 @@ namespace Takka {
             LIGHT,
         };
 
-        Texture();
-        ~Texture();
+        Texture() noexcept;
+        Texture(const std::string& path, Type type = Type::IMAGE, GLenum target = GL_TEXTURE_2D) noexcept;
+        ~Texture() noexcept;
 
-        Texture(const Texture& texture);
+        Texture(const Texture& texture) noexcept;
+        Texture(Texture&& texture) noexcept;
 
-        Texture& operator=(const Texture& texture);
+        Texture& operator=(const Texture& texture) noexcept;
+        Texture& operator=(Texture&& texture) noexcept;
 
         void LoadTexture(const std::string& path, Type type = Type::IMAGE, GLenum target = GL_TEXTURE_2D);
 

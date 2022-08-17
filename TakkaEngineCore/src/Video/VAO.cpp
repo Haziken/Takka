@@ -1,32 +1,31 @@
 #include "../../include/Video/VAO.h"
 
-Takka::VAO::VAO()
+Takka::VAO::VAO() noexcept
 {
 	glGenVertexArrays(1, &id);
 }
 
-Takka::VAO::VAO(VBO& vbo)
+Takka::VAO::VAO(VBO& vbo) noexcept
 {
 	glGenVertexArrays(1, &id);
 	AddVBO(vbo);
 }
 
-Takka::VAO::VAO(EBO& ebo)
+Takka::VAO::VAO(EBO& ebo) noexcept
 {
 	glGenVertexArrays(1, &id);
 	AddEBO(ebo);
 }
 
-Takka::VAO::VAO(VBO& vbo, EBO& ebo)
+Takka::VAO::VAO(VBO& vbo, EBO& ebo) noexcept
 {
 	glGenVertexArrays(1, &id);
 	AddEBO(ebo);
 	AddVBO(vbo);
 }
 
-Takka::VAO::VAO(const VAO& vao)
+Takka::VAO::VAO(const VAO& vao) noexcept
 {
-	this->attribVector = vao.attribVector;
 	this->vbo = vao.vbo;
 	this->ebo = vao.ebo;
 
@@ -36,12 +35,19 @@ Takka::VAO::VAO(const VAO& vao)
 	this->UnBind();
 
 	for (auto& i : attribVector.GetVector())
-		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)(i.pointer), i.type, i.normalaized);
+		this->AddAttribPointer(i);
 }
 
-Takka::VAO& Takka::VAO::operator=(const VAO& vao)
+Takka::VAO::VAO(VAO&& vao) noexcept
 {
-	this->attribVector = vao.attribVector;
+	std::swap(this->attribVector, vao.attribVector);
+	std::swap(this->ebo, vao.ebo);
+	std::swap(this->id, vao.id);
+	std::swap(this->vbo, vao.vbo);
+}
+
+Takka::VAO& Takka::VAO::operator=(const VAO& vao) noexcept
+{
 	this->vbo = vao.vbo;
 	this->ebo = vao.ebo;
 
@@ -51,12 +57,21 @@ Takka::VAO& Takka::VAO::operator=(const VAO& vao)
 	this->UnBind();
 
 	for (auto& i : attribVector.GetVector())
-		this->AddAttribPointer(i.index, i.size, i.stride, (GLuint)(i.pointer), i.type, i.normalaized);
+		this->AddAttribPointer(i);
 
 	return *this;
 }
 
-Takka::VAO::~VAO()
+Takka::VAO& Takka::VAO::operator=(VAO&& vao) noexcept
+{
+	std::swap(this->attribVector, vao.attribVector);
+	std::swap(this->ebo, vao.ebo);
+	std::swap(this->id, vao.id);
+	std::swap(this->vbo, vao.vbo);
+	return *this;
+}
+
+Takka::VAO::~VAO() noexcept
 {
 	glDeleteVertexArrays(1, &id);
 }
@@ -115,6 +130,16 @@ void Takka::VAO::AddAttribPointer(GLuint id, GLuint size, GLuint dataSize, GLuin
 	UnBind();
 
 	attribVector += AttribPointer(id, size, dataType, normalaze, dataSize, (void*)dataIndent);
+}
+
+void Takka::VAO::AddAttribPointer(AttribPointer point)
+{
+	Bind();
+	glVertexAttribPointer(point.index, point.size, point.type, point.normalaized, point.stride, point.pointer);
+	EnableArray(point.index);
+	UnBind();
+
+	attribVector += point;
 }
 
 void Takka::VAO::Draw(Shader& shader, GLuint indent)

@@ -10,10 +10,14 @@ namespace Takka {
     class Model
     {
     public:
-        Model() {}
-        Model(const std::string& path);
+        Model() noexcept {}
+        Model(const std::string& path) noexcept;
 
-        Model(const Model& model);
+        Model(const Model& model) noexcept;
+        Model(Model&& model) noexcept;
+
+        Model& operator=(const Model& model) noexcept;
+        Model& operator=(Model&& model) noexcept;
 
         void LoadModel(const std::string& path);
 

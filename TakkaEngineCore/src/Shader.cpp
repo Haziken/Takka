@@ -1,16 +1,27 @@
 #include "../include/Shader.h"
 
-Takka::Shader::Shader() {}
+Takka::Shader::Shader(Shader&& sh) noexcept
+{
+	std::swap(this->id, sh.id);
+}
 
-Takka::Shader::Shader(GLuint id) : id(id)
+Takka::Shader& Takka::Shader::operator=(Shader&& sh) noexcept
+{
+	std::swap(this->id, sh.id);
+	return *this;
+}
+
+Takka::Shader::Shader() noexcept {}
+
+Takka::Shader::Shader(GLuint id) noexcept : id(id)
 {}
 
-Takka::Shader::Shader(const std::string& vertex, const std::string& fragment)
+Takka::Shader::Shader(const std::string& vertex, const std::string& fragment) noexcept
 {
 	CreateProgram(vertex, fragment);
 }
 
-Takka::Shader::~Shader()
+Takka::Shader::~Shader() noexcept
 {
 	glDeleteProgram(id);
 }
@@ -149,8 +160,7 @@ void Takka::Shader::CreateProgram(const std::string& vertex, const std::string& 
 	{
 		GLchar infoLog[1024];
 		glGetShaderInfoLog(id, 1024, nullptr, infoLog);
-		//LERROR("Shader not link: ", infoLog);
-		std::cout << infoLog;
+		LERROR("Shader not link: ", infoLog);
 		glDeleteShader(vert);
 		glDeleteShader(frag);
 	}
@@ -171,8 +181,7 @@ GLuint Takka::Shader::CreateShaderProgram(const std::string& code, GLenum shader
 	{
 		GLchar infoLog[1024];
 		glGetShaderInfoLog(shaderID, 1024, nullptr, infoLog);
-		//LERROR("Shader not compile: ", infoLog);
-		std::cout << infoLog;
+		LERROR("Shader not compile: ", infoLog);
 		return 0;
 	}
 	return shaderID;

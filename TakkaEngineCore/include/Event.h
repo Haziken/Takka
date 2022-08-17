@@ -6,7 +6,7 @@ namespace Takka { // Event interface
     class Event
     {
     public:
-        Event();
+        Event() noexcept;
         
         virtual void KeyPress(int key, int mods) {}
         virtual void KeyRepeat(int key, int mods) {}

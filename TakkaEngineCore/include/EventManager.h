@@ -47,6 +47,11 @@ namespace Takka
 	private:
 		EventManager();
 
+		EventManager(const EventManager&) = delete;
+		EventManager(const EventManager&&) = delete;
+		EventManager& operator=(const EventManager&) = delete;
+		EventManager&& operator=(const EventManager&&) = delete;
+
 		static void KeyboardEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
 		static void TextEvent(GLFWwindow* window, unsigned int codepoint);
 		static void CursorMoveEvent(GLFWwindow* window, double xpos, double ypos);

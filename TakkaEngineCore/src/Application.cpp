@@ -1,12 +1,29 @@
 #include "../include/Application.h"
 #include "../include/Logger.h"
-Takka::Application::Application(std::string title, GLuint w, GLuint h)
+
+Takka::Application::Application(Application&& app) noexcept
+{
+	std::swap(this->win, app.win);
+}
+
+Takka::Application& Takka::Application::operator=(Application&& app) noexcept
+{
+	std::swap(this->win, app.win);
+	return *this;
+}
+
+Takka::Application::Application(std::string title, GLuint w, GLuint h) noexcept
 {
 	win = new Window(title, w, h);
 }
 
-Takka::Application::Application(Window* win) : win(win)
+Takka::Application::Application(Window* win) noexcept : win(win)
 {}
+
+Takka::Application::~Application() noexcept
+{
+	win->~Window();
+}
 
 Takka::Window* Takka::Application::GetWindow()
 {

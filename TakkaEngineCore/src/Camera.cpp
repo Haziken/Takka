@@ -1,10 +1,53 @@
 #include "../include/Camera.h"
 
-Takka::Camera::Camera(GLuint widht, GLuint height, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov)
+Takka::Camera::Camera(const Camera& cam) noexcept
+	: fov(cam.fov), worldUp(cam.worldUp), position(cam.position), w(cam.w), h(cam.h), pitch(cam.pitch), yaw(cam.yaw)
+{
+	UpdateVectors();
+}
+
+Takka::Camera::Camera(Camera&& cam) noexcept
+{
+	std::swap(this->h, cam.h);
+	std::swap(this->w, cam.w);
+	std::swap(this->fov, cam.fov);
+	std::swap(this->yaw, cam.yaw);
+	std::swap(this->pitch, cam.pitch);
+	std::swap(this->worldUp, cam.worldUp);
+	std::swap(this->position, cam.position);
+}
+
+Takka::Camera& Takka::Camera::operator=(const Camera& cam) noexcept
+{
+	this->h = cam.h;
+	this->w = cam.w;
+	this->fov = cam.fov;
+	this->yaw = cam.yaw;
+	this->pitch = cam.pitch;
+	this->worldUp = cam.worldUp;
+	this->position = cam.position;
+	return *this;
+}
+
+Takka::Camera& Takka::Camera::operator=(Camera&& cam) noexcept
+{
+	std::swap(this->h, cam.h);
+	std::swap(this->w, cam.w);
+	std::swap(this->fov, cam.fov);
+	std::swap(this->yaw, cam.yaw);
+	std::swap(this->pitch, cam.pitch);
+	std::swap(this->worldUp, cam.worldUp);
+	std::swap(this->position, cam.position);
+	return *this;
+}
+
+Takka::Camera::Camera(GLuint widht, GLuint height, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov) noexcept
 	: position(position), worldUp(worldUp), yaw(yaw), pitch(pitch), fov(fov), w(widht), h(height)
 {
 	UpdateVectors();
 }
+
+Takka::Camera::~Camera() noexcept {}
 
 void Takka::Camera::LoadMatrixInShader(Shader& sheder, std::string viewMatrixName, std::string projectionMatrix)
 {

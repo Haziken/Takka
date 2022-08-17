@@ -1,23 +1,39 @@
 #include "../../include/Video/Buffer.h"
 
-Takka::Buffer::Buffer(GLenum type) : type(type)
+Takka::Buffer::Buffer(GLenum type) noexcept : type(type)
 {
 	glGenBuffers(1, &id);
+	LDEBUG("Buffer: ", id, " created");
 }
 
-Takka::Buffer::Buffer(const Buffer& buffer)
+Takka::Buffer::Buffer(const Buffer& buffer) noexcept
 {
 	glGenBuffers(1, &id);
 	BufferCopyData(buffer, *this);
+	LDEBUG("Buffer: ", buffer.id, " copy to: ", id);
 }
 
-Takka::Buffer& Takka::Buffer::operator=(const Buffer& buffer)
+Takka::Buffer::Buffer(Buffer&& buffer) noexcept
+{
+	Swap(*this, buffer);
+	LDEBUG("Buffer: ", id, " moved");
+}
+
+Takka::Buffer& Takka::Buffer::operator=(const Buffer& buffer) noexcept
 {
 	BufferCopyData(buffer, *this);
+	LDEBUG("Buffer: ", buffer.id, " copy to: ", id);
 	return *this;
 }
 
-Takka::Buffer::~Buffer()
+Takka::Buffer& Takka::Buffer::operator=(Buffer&& buffer) noexcept
+{
+	Swap(*this, buffer);
+	LDEBUG("Buffer: ", id, " moved");
+	return *this;
+}
+
+Takka::Buffer::~Buffer() noexcept
 {
 	glDeleteBuffers(1, &id);
 }
@@ -47,4 +63,11 @@ void Takka::Buffer::BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer
 	writeBuffer.type = readBuffer.type;
 	glBindBuffer(GL_COPY_READ_BUFFER, 0);
 	glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+}
+
+void Takka::Buffer::Swap(Buffer& l, Buffer& r) noexcept
+{
+	std::swap(l.id, r.id);
+	std::swap(l.sizeOfData, r.sizeOfData);
+	std::swap(l.type, r.type);
 }

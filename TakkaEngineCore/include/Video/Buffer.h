@@ -2,16 +2,23 @@
 
 #include <glad/glad.h>
 #include "Array.h"
+#include "../Logger.h"
 
 namespace Takka
 {
 	class Buffer
 	{
 	public:
-		Buffer(GLenum bufferType);
-		Buffer(const Buffer& buffer);
-		Buffer& operator=(const Buffer& buffer);
-		~Buffer();
+
+		Buffer(const Buffer& buffer) noexcept;
+		Buffer(Buffer&& buffer) noexcept;
+
+		Buffer& operator=(const Buffer& buffer) noexcept;
+		Buffer& operator=(Buffer&& buffer) noexcept;
+
+		Buffer(GLenum bufferType) noexcept;
+		
+		~Buffer() noexcept;
 
 		void Bind();
 		void UnBind();
@@ -36,10 +43,11 @@ namespace Takka
 		}
 
 		static void BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer);
+		static void Swap(Buffer& l, Buffer& r) noexcept;
 
 	private:
-		GLuint id;
-		GLenum type;
+		GLuint id = 0;
+		GLenum type = 0;
 		GLuint sizeOfData = 0;
 	};
 }

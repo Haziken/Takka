@@ -1,14 +1,34 @@
 #include "../include/Model.h"
 
-Takka::Model::Model(const std::string& path)
+Takka::Model::Model(const std::string& path) noexcept
 {
 	LoadModel(path);
 }
 
-Takka::Model::Model(const Model& model)
+Takka::Model::Model(const Model& model) noexcept
 {
 	this->meshes = model.meshes;
 	this->directory = model.directory;
+}
+
+Takka::Model::Model(Model&& model) noexcept
+{
+	std::swap(this->meshes, model.meshes);
+	std::swap(this->directory, model.directory);
+}
+
+Takka::Model& Takka::Model::operator=(const Model& model) noexcept
+{
+	this->meshes = model.meshes;
+	this->directory = model.directory;
+	return *this;
+}
+
+Takka::Model& Takka::Model::operator=(Model&& model) noexcept
+{
+	std::swap(this->meshes, model.meshes);
+	std::swap(this->directory, model.directory);
+	return *this;
 }
 
 void Takka::Model::LoadModel(const std::string& path)
@@ -90,15 +110,13 @@ Takka::Mesh Takka::Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 Takka::Array<Takka::Texture> Takka::Model::loadMaterialTexture(aiMaterial* mat, aiTextureType type, Takka::Texture::Type typeName)
 {
-	std::vector<Takka::Texture> textures;
+	Takka::Array<Takka::Texture> textures;
 	for (size_t i = 0; i < mat->GetTextureCount(type); ++i)
 	{
 		aiString str;
 		mat->GetTexture(type, i, &str);
-		Takka::Texture texture;
-		texture.LoadTexture(directory + "/" + str.C_Str(), typeName);
-		textures.push_back(texture);
+		textures += Takka::Texture(directory + "/" + str.C_Str(), typeName);
 		LINFO("Texture load: ", directory + "/" + str.C_Str(), " , Type: ", (int)typeName);
 	}
-	return Takka::Array<Takka::Texture>(textures);
+	return textures;
 }

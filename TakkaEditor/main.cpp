@@ -21,65 +21,16 @@ public:
         lastX = 400; lastY = 300;
         EVENTMANAGER->SetInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
        
-        //md.LoadModel("../../RoomModel/Room.obj");
+        md.LoadModel("../../bedrock.obj");
 
-        cam = new Takka::Camera(800,600);
-        cam->SetPosition(glm::vec3(0, 0, 3));
-        cam->SetYaw(270);
+        cam = Takka::Camera(800,600);
+        cam.SetPosition(glm::vec3(0, 0, 3));
+        cam.SetYaw(270);
         model = glm::mat4(1.0f);
 
         sh.CreateProgram(
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex_texture.glsl"), 
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment_texture.glsl"));
-        
-        tex.LoadTexture("../../TakkaEngineCore/Textures/texture1.jpg");
-
-        vao.AddVBO(Takka::VBO(Takka::Array<GLfloat>({
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f })));
-
-        vao.AddAttribPointer(0, 3, 5 * sizeof(GLfloat));
-        vao.AddAttribPointer(1, 2, 5 * sizeof(GLfloat), 3 * sizeof(GLfloat));
-
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex_cube.glsl"), 
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment_cube.glsl"));
     }
 
 
@@ -88,19 +39,19 @@ public:
     {
         if (EVENTMANAGER->GetState(GLFW_KEY_W) == GLFW_PRESS)
         {
-            cam->SetPosition(cam->GetPosition() + cam->GetFront() * 0.01f * delta);
+            cam.SetPosition(cam.GetPosition() + cam.GetFront() * 0.01f * delta);
         }
         if (EVENTMANAGER->GetState(GLFW_KEY_S) == GLFW_PRESS)
         {
-            cam->SetPosition(cam->GetPosition() - cam->GetFront() * 0.01f * delta);
+            cam.SetPosition(cam.GetPosition() - cam.GetFront() * 0.01f * delta);
         }
         if (EVENTMANAGER->GetState(GLFW_KEY_A) == GLFW_PRESS)
         {
-            cam->SetPosition(cam->GetPosition() - cam->GetRight() * 0.01f * delta);
+            cam.SetPosition(cam.GetPosition() - cam.GetRight() * 0.01f * delta);
         }
         if (EVENTMANAGER->GetState(GLFW_KEY_D) == GLFW_PRESS)
         {
-            cam->SetPosition(cam->GetPosition() + cam->GetRight() * 0.01f * delta);
+            cam.SetPosition(cam.GetPosition() + cam.GetRight() * 0.01f * delta);
         }
         //model = glm::rotate(model, glm::radians(0.1f * delta), glm::vec3(0.0,1.0,0.0));
     }
@@ -111,8 +62,8 @@ public:
         lastX = x;
         lastY = y;
 
-        cam->SetPitch(cam->GetPitch() - offsetY * 0.1);
-        cam->SetYaw(cam->GetYaw() + offsetX * 0.1);
+        cam.SetPitch(cam.GetPitch() - offsetY * 0.1);
+        cam.SetYaw(cam.GetYaw() + offsetX * 0.1);
 
     }
 
@@ -123,27 +74,22 @@ public:
 
     void Render() override
     {
-        cam->LoadMatrixInShader(sh, "view", "project");
+        cam.LoadMatrixInShader(sh, "view", "project");
         sh.LoadUniformData("model", model);
-        //md.Draw(sh);
-        tex.Activate(GL_TEXTURE0);
-        tex.Bind();
-        vao.Draw(sh);
+        md.Draw(sh);
     }
 
 private:
-    Takka::Texture tex;
     Takka::Shader sh;
-    Takka::VAO vao;
     glm::mat4 model;
-    Takka::Camera* cam;
+    Takka::Camera cam;
     GLfloat lastX, lastY;
     Takka::Model md;
 };
 
 int main()
 {
-    std::cout << "Hello Takka" << std::endl;
+    LOGGER->Init("DUMP.txt");
     App p;
     p.Run();
 }
