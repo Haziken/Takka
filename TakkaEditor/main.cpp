@@ -21,7 +21,7 @@ public:
         lastX = 400; lastY = 300;
         EVENTMANAGER->SetInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
        
-        md.LoadModel("../../bedrock.obj");
+        md.LoadModel("../../bg.obj");
 
         cam = Takka::Camera(800,600);
         cam.SetPosition(glm::vec3(0, 0, 3));
@@ -53,7 +53,6 @@ public:
         {
             cam.SetPosition(cam.GetPosition() + cam.GetRight() * 0.01f * delta);
         }
-        //model = glm::rotate(model, glm::radians(0.1f * delta), glm::vec3(0.0,1.0,0.0));
     }
 
     void CursorPosition(double x, double y) override

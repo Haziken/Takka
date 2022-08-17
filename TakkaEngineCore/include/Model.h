@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "Object.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
