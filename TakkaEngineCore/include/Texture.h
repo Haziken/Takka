@@ -11,7 +11,7 @@ namespace Takka {
         enum class Type
         {
             NONE,
-            IMAGE,
+            AMBIENT,
             DIFFUSE,
             SPECULAR,
             NORMAL,
@@ -23,7 +23,7 @@ namespace Takka {
         };
 
         Texture() noexcept;
-        Texture(const std::string& path, Type type = Type::IMAGE, GLenum target = GL_TEXTURE_2D) noexcept;
+        Texture(const std::string& path, Type type = Type::NONE, GLenum target = GL_TEXTURE_2D) noexcept;
         ~Texture() noexcept;
 
         Texture(const Texture& texture) noexcept;
@@ -32,7 +32,7 @@ namespace Takka {
         Texture& operator=(const Texture& texture) noexcept;
         Texture& operator=(Texture&& texture) noexcept;
 
-        void LoadTexture(const std::string& path, Type type = Type::IMAGE, GLenum target = GL_TEXTURE_2D);
+        void LoadTexture(const std::string& path, Type type = Type::NONE, GLenum target = GL_TEXTURE_2D);
 
         unsigned char* GetData();
 

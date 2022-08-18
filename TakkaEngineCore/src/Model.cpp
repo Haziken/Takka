@@ -103,6 +103,7 @@ Takka::Mesh Takka::Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 		textures += loadMaterialTexture(material, aiTextureType_DIFFUSE, Takka::Texture::Type::DIFFUSE);
 		textures += loadMaterialTexture(material, aiTextureType_SPECULAR, Takka::Texture::Type::SPECULAR);
+		textures += loadMaterialTexture(material, aiTextureType_AMBIENT, Takka::Texture::Type::AMBIENT);
 	}
 
 	return Takka::Mesh(verteces, indices, textures);

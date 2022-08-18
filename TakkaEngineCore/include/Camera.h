@@ -1,15 +1,16 @@
 #pragma once
 
-#include "Utils.h"
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-#include "Shader.h"
 #include <cmath>
-#include <GLFW/glfw3.h>
+#include "Shader.h"
+#include "Utils.h"
 #include "Window.h"
 #include "Event.h"
+#include "Video/UBO.h"
 
 namespace Takka
 {
@@ -17,14 +18,15 @@ namespace Takka
 	{
 	public:
 
-		Camera(const Camera& cam) noexcept;
+		Camera(const Camera& cam) noexcept = delete;
 		Camera(Camera&& cam) noexcept;
 
-		Camera& operator=(const Camera& cam) noexcept;
+		Camera& operator=(const Camera& cam) noexcept = delete;
 		Camera& operator=(Camera&& cam) noexcept;
 
 		Camera(
 			Window& win, // zero division
+			GLuint uboIndex = 0,
 			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f),
 			float yaw = 45,
@@ -34,7 +36,8 @@ namespace Takka
 
 		~Camera() noexcept;
 
-		void LoadMatrixInShader(Shader& sheder, std::string viewMatrixName = "view", std::string projectionMatrix = "project");
+		//void LoadMatrixInShader(Shader& sheder, std::string viewMatrixName = "view", std::string projectionMatrix = "project");
+		void LoadMatrixInUBO();
 
 		glm::mat4 GetViewMatrix();
 		glm::mat4 GetProjectMatrix();
@@ -71,5 +74,6 @@ namespace Takka
 		GLfloat fov;
 
 		GLuint w = 0, h = 1;
+		UBO cameraUBO;
 	};
 }

@@ -1,10 +1,10 @@
 #include "../include/Camera.h"
 
-Takka::Camera::Camera(const Camera& cam) noexcept
-	: fov(cam.fov), worldUp(cam.worldUp), position(cam.position), w(cam.w), h(cam.h), pitch(cam.pitch), yaw(cam.yaw), Event()
-{
-	UpdateVectors();
-}
+//Takka::Camera::Camera(const Camera& cam) noexcept
+//	: fov(cam.fov), worldUp(cam.worldUp), position(cam.position), w(cam.w), h(cam.h), pitch(cam.pitch), yaw(cam.yaw), Event()
+//{
+//	UpdateVectors();
+//}
 
 Takka::Camera::Camera(Camera&& cam) noexcept : Event()
 {
@@ -15,19 +15,20 @@ Takka::Camera::Camera(Camera&& cam) noexcept : Event()
 	std::swap(this->pitch, cam.pitch);
 	std::swap(this->worldUp, cam.worldUp);
 	std::swap(this->position, cam.position);
+	std::swap(this->cameraUBO, cam.cameraUBO);
 }
 
-Takka::Camera& Takka::Camera::operator=(const Camera& cam) noexcept
-{
-	this->h = cam.h;
-	this->w = cam.w;
-	this->fov = cam.fov;
-	this->yaw = cam.yaw;
-	this->pitch = cam.pitch;
-	this->worldUp = cam.worldUp;
-	this->position = cam.position;
-	return *this;
-}
+//Takka::Camera& Takka::Camera::operator=(const Camera& cam) noexcept
+//{
+//	this->h = cam.h;
+//	this->w = cam.w;
+//	this->fov = cam.fov;
+//	this->yaw = cam.yaw;
+//	this->pitch = cam.pitch;
+//	this->worldUp = cam.worldUp;
+//	this->position = cam.position;
+//	return *this;
+//}
 
 Takka::Camera& Takka::Camera::operator=(Camera&& cam) noexcept
 {
@@ -38,12 +39,16 @@ Takka::Camera& Takka::Camera::operator=(Camera&& cam) noexcept
 	std::swap(this->pitch, cam.pitch);
 	std::swap(this->worldUp, cam.worldUp);
 	std::swap(this->position, cam.position);
+	std::swap(this->cameraUBO, cam.cameraUBO);
 	return *this;
 }
 
-Takka::Camera::Camera(Window& win, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov) noexcept
+Takka::Camera::Camera(Window& win, GLuint uboIndex, glm::vec3 position, glm::vec3 worldUp, float yaw, float pitch, float fov) noexcept
 	: position(position), worldUp(worldUp), yaw(yaw), pitch(pitch), fov(fov), Event()
 {
+	cameraUBO = Takka::UBO();
+	cameraUBO.LoadData(NULL, sizeof(glm::mat4) * 2, GL_STATIC_DRAW);
+	cameraUBO.BindRange(uboIndex, 2 * sizeof(glm::mat4), 0);
 	win.GetSize(w, h);
 	UpdateVectors();
 }
@@ -62,11 +67,17 @@ Takka::Camera::Camera() noexcept : Event()
 
 Takka::Camera::~Camera() noexcept {}
 
-void Takka::Camera::LoadMatrixInShader(Shader& sheder, std::string viewMatrixName, std::string projectionMatrix)
+//void Takka::Camera::LoadMatrixInShader(Shader& sheder, std::string viewMatrixName, std::string projectionMatrix)
+//{
+//	//sheder.Use();
+//	sheder.LoadUniformData(viewMatrixName, GetViewMatrix());
+//	sheder.LoadUniformData(projectionMatrix, GetProjectMatrix());
+//}
+
+void Takka::Camera::LoadMatrixInUBO()
 {
-	//sheder.Use();
-	sheder.LoadUniformData(viewMatrixName, GetViewMatrix());
-	sheder.LoadUniformData(projectionMatrix, GetProjectMatrix());
+	cameraUBO.LoadSubData(0, glm::value_ptr(GetViewMatrix()), sizeof(glm::mat4));
+	cameraUBO.LoadSubData(sizeof(glm::mat4), glm::value_ptr(GetProjectMatrix()), sizeof(glm::mat4));
 }
 
 glm::mat4 Takka::Camera::GetViewMatrix()

@@ -13,6 +13,7 @@ class App : public Takka::Application, public virtual Takka::Event
 public:
     App() : Application("test", 800, 600), Event()
     {
+        glEnable(GL_MULTISAMPLE);
         EVENTMANAGER->Init(this->GetWindow().GetWindow());
     }
 
@@ -30,8 +31,8 @@ public:
         model = glm::mat4(1.0f);
 
         sh.CreateProgram(
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex_cube.glsl"), 
-            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment_cube.glsl"));
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Vertex.glsl"), 
+            Takka::ReadFile("../../TakkaEngineCore/Shaders/Fragment.glsl"));
     }
 
 
@@ -82,7 +83,7 @@ public:
 
     void Render() override
     {
-        cam.LoadMatrixInShader(sh, "view", "project");
+        cam.LoadMatrixInUBO();
         sh.LoadUniformData("model", model);
         md.Draw(sh);
     }
@@ -98,6 +99,7 @@ private:
 int main()
 {
     LOGGER->Init("DUMP.txt");
+    glfwWindowHint(GLFW_SAMPLES, 4);
     App p;
     p.Run();
 }

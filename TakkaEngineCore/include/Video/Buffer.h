@@ -34,13 +34,18 @@ namespace Takka
 		}
 
 		template<typename T>
-		void LoadSubData(Array<T>& data)
+		void LoadSubData(size_t offset, Array<T>& data)
 		{
 			Bind();
-			glBufferSubData(type, sizeOfData, data.GetSizeOfData(), data.GetData());
-			sizeOfData += data.GetSizeOfData();
+			glBufferSubData(type, offset, data.GetSizeOfData(), data.GetData());
 			UnBind();
 		}
+
+		void LoadData(const void* data, size_t size, GLenum renderType = GL_STATIC_DRAW);
+		void LoadSubData(size_t offset, const void* data, size_t size);
+
+		void BindBase(GLuint point);
+		void BindRange(GLuint point, size_t size, size_t offset);
 
 		static void BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer);
 		static void Swap(Buffer& l, Buffer& r) noexcept;

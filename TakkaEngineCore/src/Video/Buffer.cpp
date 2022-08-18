@@ -48,6 +48,31 @@ GLuint Takka::Buffer::GetID()
 	return id;
 }
 
+void Takka::Buffer::LoadData(const void* data, size_t size, GLenum renderType)
+{
+	Bind();
+	glBufferData(type, size, data, renderType);
+	sizeOfData += size;
+	UnBind();
+}
+
+void Takka::Buffer::LoadSubData(size_t offset, const void* data, size_t size)
+{
+	Bind();
+	glBufferSubData(type, offset, size, data);
+	UnBind();
+}
+
+void Takka::Buffer::BindBase(GLuint point)
+{
+	glBindBufferBase(type, point, id);
+}
+
+void Takka::Buffer::BindRange(GLuint point, size_t size, size_t offset)
+{
+	glBindBufferRange(type, point, id, offset, size);
+}
+
 void Takka::Buffer::BufferCopyData(const Buffer& readBuffer, Buffer& writeBuffer)
 {
 	glBindBuffer(GL_COPY_READ_BUFFER, readBuffer.id);
